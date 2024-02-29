@@ -2,41 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 200 20% 98%;
-    --btn-background: 200 10% 91%;
-    --btn-background-hover: 200 10% 89%;
-    --foreground: 200 50% 3%;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --background: 200 50% 3%;
-      --btn-background: 200 10% 9%;
-      --btn-background-hover: 200 10% 12%;
-      --foreground: 200 20% 96%;
-    }
-  }
+:root {
+  --background-rgb: 39, 40, 34;
+  --color-rgb: 248, 248, 242;
 }
 
-@layer base {
-  * {
-    @apply border-foreground/20;
-  }
+body {
+  background: rgb(var(--background-rgb));
+  color: rgb(var(--color-rgb));
+  height: 100vh;
 }
 
-.animate-in {
-  animation: animateIn 0.3s ease 0.15s both;
+body * ::-webkit-scrollbar {
+  width: 20px;
 }
 
-@keyframes animateIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+body * ::-webkit-scrollbar-track {
+  background-color: transparent;
+  width: 40px;
+}
+
+body * ::-webkit-scrollbar-thumb {
+  background-color: #3e3d32;
+  border-radius: 20px;
+  border: 6px solid transparent;
+  background-clip: content-box;
 }

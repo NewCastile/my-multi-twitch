@@ -1,4 +1,4 @@
-import { createServerClient, type CookieOptions } from "@supabase/ssr";
+import { type CookieOptions, createServerClient } from "@supabase/ssr";
 import { cookies } from "next/headers";
 
 export const createClient = () => {
@@ -30,6 +30,9 @@ export const createClient = () => {
             // user sessions.
           }
         },
+      },
+      auth: {
+        autoRefreshToken: true,
       },
     },
   );

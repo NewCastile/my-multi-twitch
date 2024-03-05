@@ -2,11 +2,16 @@
 import { useEffect, useRef, useState } from "react";
 
 import { CloseIcon } from "@/app/components/icons/close-icon";
+import ExitFullScreenIcon from "@/app/components/icons/exit-fullscreen-icon";
+import FullScreenIcon from "@/app/components/icons/fullscreen-icon";
 import useSelectBroadcasts from "@/app/hooks/use-select-broadcasts";
-import { BroadcasterBasicInfo, BroadcasterStreamCardProps, StreamsGridItem } from "@/types";
+import {
+  BroadcasterBasicInfo,
+  BroadcasterStreamCardProps,
+  SelectAction,
+  StreamsGridItem,
+} from "@/types";
 
-import FollowedDrawer from "../../lib/followed-drawer";
-import SearchDrawer from "../../lib/search-drawer";
 import CancelSelectController from "../../lib/shared/cancel-select-controller";
 import ConfirmSelectController, {
   ConfirmSelectControllerIcon,
@@ -40,7 +45,8 @@ const StreamsGrid = () => {
     selectAction,
     isSelecting,
     getIsSelected,
-    selectControlsHandlers: { closeSelect, onSelectHandler },
+
+    selectControlsHandlers: { onSelectHandler, closeSelect },
   } = useSelectBroadcasts({
     selectAction: "filter",
   });
@@ -73,28 +79,12 @@ const StreamsGrid = () => {
 
   return (
     <>
+      {selectedBroadcasts.length > 0 && (
+        <StreamsFilter {...{ closeSelect, isSelecting, newUrl, selectAction }} />
+      )}
       {broadcasts && (
-        <div
-          ref={gridRef}
-          className={"flex h-max w-[80vw] flex-col items-start justify-center space-y-4"}
-        >
-          <div className={"flex w-full flex-row items-center justify-between pr-4"}>
-            <div className={"flex flex-row items-center justify-center space-x-6"}>
-              <SearchDrawer />
-              <FollowedDrawer />
-            </div>
-            {isSelecting && selectedBroadcasts.length > 0 && (
-              <div className={"flex flex-row items-center justify-center space-x-2"}>
-                <CancelSelectController onClick={closeSelect}>
-                  <CloseIcon size={"10px"} />
-                </CancelSelectController>
-                <ConfirmSelectController href={newUrl}>
-                  <ConfirmSelectControllerIcon selectAction={selectAction} size={"12px"} />
-                </ConfirmSelectController>
-              </div>
-            )}
-          </div>
-          <div className={"grid w-full grid-cols-2 gap-4 pr-4"}>
+        <div ref={gridRef} className={"flex h-max w-full flex-col items-start justify-center py-4"}>
+          <div className={"grid w-full grid-cols-2 gap-4"}>
             {listItems.map((broadcaster, broadcasterIdx) => {
               const { broadcaster_login } = broadcaster;
               const isSelected = getIsSelected({
@@ -118,7 +108,9 @@ const StreamsGrid = () => {
 const BroadcasterStreamCard = ({
   broadcaster,
   isSelected,
+  index,
   onSelect,
+  onFullScreen,
 }: BroadcasterStreamCardProps) => {
   const { broadcaster_login, broadcaster_name, isMaximized } = broadcaster;
 
@@ -150,12 +142,44 @@ const BroadcasterStreamCard = ({
             className={"flex flex-row items-center justify-center space-x-6"}
             color={"whiteAlpha.700"}
           >
+            <button onClick={() => onFullScreen(index)}>
+              {isMaximized ? <ExitFullScreenIcon /> : <FullScreenIcon />}
+            </button>
             <RemoveBroadcastLink broadcasterLogin={broadcaster_login} />
           </div>
         </div>
         <TwitchPlayer broadcasterLogin={broadcaster_login} height={isMaximized ? "400px" : null} />
       </div>
     </div>
+  );
+};
+
+const StreamsFilter = ({
+  isSelecting,
+  closeSelect,
+  newUrl,
+  selectAction,
+}: {
+  isSelecting: boolean;
+  closeSelect: () => void;
+  newUrl: string;
+  selectAction: SelectAction;
+}) => {
+  return (
+    <>
+      {isSelecting && (
+        <div
+          className={"absolute right-0 top-2 flex flex-row items-center justify-center space-x-2"}
+        >
+          <CancelSelectController onClick={closeSelect}>
+            <CloseIcon size={"10px"} />
+          </CancelSelectController>
+          <ConfirmSelectController href={newUrl}>
+            <ConfirmSelectControllerIcon selectAction={selectAction} size={"12px"} />
+          </ConfirmSelectController>
+        </div>
+      )}
+    </>
   );
 };
 

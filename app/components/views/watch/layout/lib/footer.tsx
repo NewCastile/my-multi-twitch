@@ -4,8 +4,8 @@ import GithubIcon from "@/app/components/icons/github-icon";
 
 const Footer = () => {
   return (
-    <div className={"py-4 px2 "}>
-      <p className={"text-center font-bold text-2xl text-monokai-bg-contrast"}>
+    <div className={"px-2 py-4"}>
+      <p className={"text-center text-2xl font-bold text-monokai-bg-contrast"}>
         Made by{" "}
         <Link
           className={"flex flex-row items-center justify-center space-x-2"}

@@ -15,7 +15,7 @@ const LogoutButton = async () => {
 
   return (
     <form action={signOut}>
-      <button className={"btn-md btn-monokai-red capitalize font-bold"}>Logout</button>
+      <button className={"btn-md btn-monokai-red font-bold capitalize"}>Logout</button>
     </form>
   );
 };

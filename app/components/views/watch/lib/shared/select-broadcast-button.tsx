@@ -7,7 +7,7 @@ const SelectBroadcastButton = ({
 }) => {
   return (
     <button
-      className={`h-6 w-6 ${
+      className={`size-6 ${
         isSelected
           ? "border-monokai-white bg-monokai-red-primary"
           : "border-monokai-bg-contrast bg-inherit"

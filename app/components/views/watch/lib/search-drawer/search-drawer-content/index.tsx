@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 
 import { SpinnerIcon } from "@/app/components/icons/spinner-icon";
@@ -25,21 +26,13 @@ const SearchDrawerContent = () => {
   const dispatch = useAppDispatch();
   const { accessToken } = useAppSelector((state) => state.accessToken);
   const { shownChannels, channels, pageToken } = useAppSelector((state) => state.searchChannels);
+
   const [triggerNextSearch, { data, error, isLoading, isFetching, originalArgs }] =
     useLazySearchBroadcastQuery();
+
   const [value, setValue] = useState("");
   const [liveOnly, setLiveOnly] = useState(false);
   const onFirstPage = pageToken === SEARCH_ITEMS_PER_PAGE;
-  const hasPagination = (data?: SearchChannelResponse | ApiErrorResponse) => {
-    if (!data) return false;
-    if ("message" in data) return false;
-    if (!isSearchChannelsResponse(data)) return false;
-    if (!data.pagination.cursor) {
-      return false;
-    } else {
-      return true;
-    }
-  };
 
   useEffect(() => {
     if (!data || !isSearchChannelsResponse(data)) return;
@@ -66,6 +59,17 @@ const SearchDrawerContent = () => {
     });
   };
 
+  const hasPagination = (data?: SearchChannelResponse | ApiErrorResponse) => {
+    if (!data) return false;
+    if ("message" in data) return false;
+    if (!isSearchChannelsResponse(data)) return false;
+    if (!data.pagination.cursor) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
   const nextButtonOnClickHandler = () => {
     if (!value) return;
     if (pageToken && shownChannels.length < channels.length) {
@@ -86,7 +90,7 @@ const SearchDrawerContent = () => {
   return (
     <div
       className={
-        "flex h-full w-full flex-col items-center justify-start space-y-5 overflow-y-hidden px-4"
+        "flex size-full flex-col items-center justify-start space-y-5 overflow-y-hidden px-4"
       }
     >
       <div className={"flex flex-row items-center justify-center space-x-2"}>

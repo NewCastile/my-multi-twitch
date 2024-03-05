@@ -2,7 +2,7 @@
 
 import { FollowedChannelItemProps } from "@/types";
 
-import AddBroadcastLink from "../../../../shared/add-broadcast-link";
+import AddBroadcastButton from "../../../../shared/add-broadcast-button";
 import SelectBroadcastButton from "../../../../shared/select-broadcast-button";
 
 import { getFollowAge } from "./follow-age";
@@ -25,7 +25,7 @@ const FollowedChannelItem = ({
         </p>
       </div>
       {!isOnScreen && (
-        <AddBroadcastLink iconOnly broadcasterLogin={followedChannel.broadcaster_login} />
+        <AddBroadcastButton iconOnly broadcasterLogin={followedChannel.broadcaster_login} />
       )}
     </li>
   );

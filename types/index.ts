@@ -1,3 +1,4 @@
+import { Drawer } from "flowbite";
 import { SVGAttributes } from "react";
 
 export interface FollowedStream {
@@ -55,46 +56,10 @@ export interface FollowedChannelsResponse {
   pagination: { cursor?: string };
 }
 
-export interface ClerkAccessTokenResponse {
-  object: string;
-  token: string;
-  provider: string;
-  public_metadata: object;
-  label: string;
-  scopes: string[];
-  token_secret: string;
-}
-
-export interface ClerkAccessTokenErrorResponse {
-  errors: Array<ClerkAccessTokenError>;
-  meta: object | null | undefined;
-}
-
-export interface ClerkAccessTokenError {
-  message: string;
-  long_message: string;
-  code: string;
-  meta: object | null | undefined;
-  clerk_trace_id: string;
-}
-
 export interface ApiErrorResponse {
   message: string;
   status?: number;
   statusText?: string;
-}
-
-export interface RefreshTokenErrorResponse {
-  error: string;
-  status: number;
-  message: string;
-}
-
-export interface RefreshTokenData {
-  access_token: string;
-  refresh_token: string;
-  scope: string[];
-  token_type: string;
 }
 
 export interface BroadcasterBasicInfo {
@@ -127,10 +92,6 @@ export interface ErrorViewEntrie {
   statusText: string;
   component: ErrorViewComponent;
 }
-
-export type ErrorMessageFn = (param: string) => string;
-export type ErrorMessage = string | ErrorMessageFn;
-export type ErrorEntrieValue = { statusText: string; message: ErrorMessage };
 
 export interface UnexpectedErrorProps {
   error: Error & { digest?: string };
@@ -183,4 +144,10 @@ export interface WatchPageProps {
 
 export interface IconProps {
   size?: SVGAttributes<SVGSVGElement>["height"];
+}
+
+export interface DrawerContextProps {
+  drawer: Drawer | null | undefined;
+  drawerId: string;
+  drawerRef: (node: HTMLDivElement | null | undefined) => void;
 }

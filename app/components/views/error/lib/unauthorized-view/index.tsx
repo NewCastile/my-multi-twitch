@@ -7,7 +7,7 @@ const UnauthorizedView = async ({ message, status, statusText }: ErrorViewCompon
   return (
     <div
       className={
-        "w-full flex flex-col items-center justify-center space-y-4 mt-8 text-monokai-bg-contrast"
+        "mt-8 flex w-full flex-col items-center justify-center space-y-4 text-monokai-bg-contrast"
       }
     >
       <p className={"text-xl"}>

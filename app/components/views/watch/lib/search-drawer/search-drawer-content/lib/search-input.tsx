@@ -16,7 +16,7 @@ const SearchInput = ({
 }) => {
   return (
     <div className={"flex w-full flex-col items-center justify-center"}>
-      <div className={"relative flex w-max flex-col items-center justify-center"}>
+      <div className={"relative flex w-full flex-col items-center justify-center"}>
         <input
           className={
             "block w-full rounded-md border-2 border-monokai-bg-contrast bg-inherit px-2 py-1 outline-none placeholder:text-monokai-bg-contrast focus:outline focus:outline-2 focus:outline-monokai-red-light active:outline active:outline-2 active:outline-monokai-red-light"

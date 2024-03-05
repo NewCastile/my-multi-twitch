@@ -3,7 +3,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "eslint ./app",
+    "lint:debug": "eslint ./app --debug",
+    "lint:fix": "eslint ./app --fix"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.1",
@@ -37,6 +40,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.5",
+    "eslint-plugin-tailwindcss": "^3.14.3",
     "typescript": "^5.3.3"
   }
 }

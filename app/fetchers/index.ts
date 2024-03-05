@@ -1,10 +1,4 @@
-import {
-  ApiErrorResponse,
-  FollowedChannelsResponse,
-  FollowedStreamsResponse,
-  RefreshTokenData,
-} from "@/types";
-import { isRefreshTokenData } from "@/utils/type-guards";
+import { ApiErrorResponse, FollowedChannelsResponse, FollowedStreamsResponse } from "@/types";
 
 const fetchTwitchApiEndpoint = async <T>({
   url,
@@ -66,34 +60,4 @@ export const fetchUserFollowedStreams = async ({
   });
 
   return response;
-};
-
-// fetches the new access and refresh token
-export const getRefreshToken = async (
-  refreshToken: string,
-): Promise<RefreshTokenData | ApiErrorResponse> => {
-  const response = await fetch("https://id.twitch.tv/oauth2/token", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      client_id: process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID,
-      client_secret: process.env.NEXT_PUBLIC_TWITCH_CLIENT_SECRET,
-      grant_type: "refresh_token",
-      refresh_token: refreshToken,
-    }),
-  });
-
-  const responseData = await response.json();
-
-  if (isRefreshTokenData(responseData)) {
-    return responseData;
-  } else {
-    return {
-      message: `${responseData.message}`,
-      status: response.status,
-      statusText: response.statusText,
-    };
-  }
 };

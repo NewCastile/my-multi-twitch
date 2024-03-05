@@ -1,3 +1,5 @@
+import { DrawerOptions } from "flowbite";
+
 export const MAX_BROADCASTS_NUMBER = 9;
 export const FOLLOWED_ITEMS_PER_PAGE = 7;
 export const SEARCH_ITEMS_PER_PAGE = 20;
@@ -15,3 +17,12 @@ export const ERRORS_STATUSES = [
     statusText: "Bad Request",
   },
 ];
+
+export const defaultDrawerOptions: DrawerOptions = {
+  placement: "right",
+  backdrop: true,
+  bodyScrolling: true,
+  edge: true,
+  edgeOffset: "",
+  backdropClasses: "bg-stone-900/80 fixed inset-0 z-30",
+};

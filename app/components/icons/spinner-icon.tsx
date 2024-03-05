@@ -5,7 +5,7 @@ export const SpinnerIcon = () => {
     <div role={"status"}>
       <svg
         aria-hidden={"true"}
-        className={"h-8 w-8 animate-spin fill-blue-600"}
+        className={"size-8 animate-spin fill-blue-600"}
         fill={"none"}
         viewBox={"0 0 100 101"}
         xmlns={"http://www.w3.org/2000/svg"}

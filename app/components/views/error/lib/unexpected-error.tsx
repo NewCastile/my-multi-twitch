@@ -13,7 +13,7 @@ const UnexpectedError = ({ error, reset }: UnexpectedErrorProps) => {
   return (
     <div
       className={
-        "w-full flex flex-col items-center justify-center space-y-2 mt-8 text-monokai-bg-contrast"
+        "mt-8 flex w-full flex-col items-center justify-center space-y-2 text-monokai-bg-contrast"
       }
     >
       <h2 className={"text-xl"}>Something went wrong!</h2>

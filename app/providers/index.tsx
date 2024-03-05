@@ -1,8 +1,7 @@
 "use client";
-import { RefObject, useRef, useState } from "react";
+import { useRef } from "react";
 import { Provider as StoreProvider } from "react-redux";
 
-import { SoundContext } from "@/lib/context";
 import { AppStore, makeStore } from "@/lib/store";
 
 export const ReduxProvider = ({ children }: { children: React.ReactNode }) => {
@@ -16,20 +15,6 @@ export const ReduxProvider = ({ children }: { children: React.ReactNode }) => {
   return <StoreProvider store={storeRef.current}>{children}</StoreProvider>;
 };
 
-export const SoundContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [references, setReferences] = useState<
-    Array<{ ref: RefObject<HTMLDivElement>; isMuted: boolean }>
-  >([]);
-
-  return (
-    <SoundContext.Provider value={{ references, setReferences }}>{children}</SoundContext.Provider>
-  );
-};
-
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <ReduxProvider>
-      <SoundContextProvider>{children}</SoundContextProvider>
-    </ReduxProvider>
-  );
+  return <ReduxProvider>{children}</ReduxProvider>;
 };

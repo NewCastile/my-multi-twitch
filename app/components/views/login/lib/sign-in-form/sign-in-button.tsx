@@ -21,7 +21,7 @@ export const SignInButton = ({ ...props }: Props) => {
 
   return (
     <button
-      className={"btn-md btn-monokai-violet text-lg w-max"}
+      className={"btn-md btn-monokai-violet w-max text-lg"}
       formAction={signInWithTwitch}
       {...props}
       type={"submit"}

@@ -14,8 +14,8 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html className={GeistSans.className} lang={"en"}>
-      <body className={"bg-background text-foreground"}>
-        <main className={"flex flex-col items-center min-h-screen"}>{children}</main>
+      <body>
+        <main className={"flex min-h-screen flex-col items-center"}>{children}</main>
       </body>
     </html>
   );

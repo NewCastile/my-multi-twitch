@@ -6,7 +6,6 @@ import followedReducer from "./features/followed/followed-slice";
 import { searchApi } from "./features/search/search-api-slice";
 import searchChannelsReducer from "./features/search/search-channels-slice";
 import accessTokenReducer from "./features/tokens/access-token-slice";
-import { refreshAccessTokenApi } from "./features/tokens/refresh-access-token-api-slice";
 
 export const makeStore = () => {
   return configureStore({
@@ -15,13 +14,10 @@ export const makeStore = () => {
       accessToken: accessTokenReducer,
       followed: followedReducer,
       searchApi: searchApi.reducer,
-      refreshAccessTokenApi: refreshAccessTokenApi.reducer,
       searchChannels: searchChannelsReducer,
     },
     middleware(getDefaultMiddleWare) {
-      return getDefaultMiddleWare()
-        .concat(searchApi.middleware)
-        .concat(refreshAccessTokenApi.middleware);
+      return getDefaultMiddleWare().concat(searchApi.middleware);
     },
   });
 };

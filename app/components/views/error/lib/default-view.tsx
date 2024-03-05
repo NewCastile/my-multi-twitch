@@ -6,7 +6,7 @@ const DefaultView = async ({ message, status, statusText, children }: ErrorViewC
   return (
     <div
       className={
-        "flex flex-col items-center justify-center space-y-4 mt-8 text-monokai-bg-contrast"
+        "mt-8 flex flex-col items-center justify-center space-y-4 text-monokai-bg-contrast"
       }
     >
       <p className={"text-xl"}>

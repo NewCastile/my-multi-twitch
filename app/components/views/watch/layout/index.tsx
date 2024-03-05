@@ -3,11 +3,11 @@ import Header from "./lib/header";
 
 const WatchPageLayout = async ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className={"flex h-screen w-full flex-col items-center overflow-auto justify-center"}>
+    <div className={"flex h-screen w-full flex-col items-center justify-center overflow-auto"}>
       <Header />
-      <div className={"w-full flex flex-col items-center justify-start overflow-y-auto"}>
-        <div className={"w-full h-max"}>
-          <div className={"min-h-screen h-max"}>{children}</div>
+      <div className={"flex w-full flex-col items-center justify-start overflow-y-auto"}>
+        <div className={"h-max w-full"}>
+          <div className={"h-max min-h-screen"}>{children}</div>
         </div>
         <Footer />
       </div>

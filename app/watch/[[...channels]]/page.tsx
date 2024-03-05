@@ -1,11 +1,12 @@
 import { redirect } from "next/navigation";
 
 import ErrorView from "@/app/components/views/error";
+import SessionExpiredView from "@/app/components/views/error/lib/session-expired-view";
 import HomeView from "@/app/components/views/watch/home-view";
 import AppPreloader from "@/app/components/views/watch/lib/app-preloader";
 import NoChannelsView from "@/app/components/views/watch/no-channels-view";
 import { fetchUserFollowedChannels, fetchUserFollowedStreams } from "@/app/fetchers";
-import { AppProvider } from "@/app/providers";
+import { ReduxProvider } from "@/app/providers";
 import { MAX_BROADCASTS_NUMBER } from "@/constants";
 import { FollowedChannel, FollowedStream } from "@/types";
 import { createClient } from "@/utils/supabase/server";
@@ -20,10 +21,13 @@ const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (!user || !session) {
-    return redirect("/login");
+  if (!user) {
+    redirect("/login");
   }
 
+  if (!session) {
+    return <SessionExpiredView />;
+  }
   const {
     user_metadata: { provider_id: providerAccountId },
   } = user;
@@ -31,7 +35,7 @@ const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
   const { provider_token: accessToken, provider_refresh_token: refreshToken } = session;
 
   if (!accessToken || !refreshToken) {
-    return redirect("/login");
+    redirect("/login");
   }
 
   const fetchFollowedChannelsResponse = await fetchUserFollowedChannels({
@@ -78,7 +82,7 @@ const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
   if (hasRepeatedChannels || maxReached) {
     const newUrl = `/watch/${channelsArray.join("/")}`;
 
-    return redirect(newUrl);
+    redirect(newUrl);
   }
 
   const screenBroadcasts = channelsArray.length
@@ -90,7 +94,7 @@ const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
 
   return (
     <>
-      <AppProvider>
+      <ReduxProvider>
         <AppPreloader
           {...{
             screenBroadcasts,
@@ -100,8 +104,8 @@ const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
             followedStreams: fetchFollowedStreamsResponse.data,
           }}
         />
-        {channels.length ? <HomeView /> : <NoChannelsView />}
-      </AppProvider>
+        {channels.length > 0 ? <HomeView /> : <NoChannelsView />}
+      </ReduxProvider>
     </>
   );
 };

@@ -4,7 +4,7 @@ import NextImage from "next/image";
 
 import { FollowedStreamItemProps } from "@/types";
 
-import AddBroadcastLink from "../../../shared/add-broadcast-link";
+import AddBroadcastButton from "../../../shared/add-broadcast-button";
 import SelectBroadcastButton from "../../../shared/select-broadcast-button";
 
 const FollowedStreamItem = ({
@@ -28,7 +28,7 @@ const FollowedStreamItem = ({
           </div>
         )}
         <p className={"w-full text-justify font-black text-inherit"}>{user_name}</p>
-        {!isOnScreen && <AddBroadcastLink iconOnly broadcasterLogin={user_login} />}
+        {!isOnScreen && <AddBroadcastButton iconOnly broadcasterLogin={user_login} />}
       </div>
       <NextImage
         alt={"profile-picture"}
@@ -38,7 +38,7 @@ const FollowedStreamItem = ({
       />
       <p className={"w-full text-monokai-green-primary"}>{title}</p>
       <div className={"flex w-full flex-row items-center justify-center"}>
-        <div className={"mr-2 inline-block h-2.5 w-2.5 rounded-full bg-monokai-red-light"} />
+        <div className={"mr-2 inline-block size-2.5 rounded-full bg-monokai-red-light"} />
         <p className={"w-full text-left text-monokai-yellow"}>{game_name}</p>
       </div>
     </li>

@@ -50,7 +50,7 @@ const FollowedDrawerContent = () => {
   };
 
   return (
-    <div className={"flex h-full w-full flex-col items-center justify-start px-4 pb-4 font-bold"}>
+    <div className={"flex size-full flex-col items-center justify-start px-4 pb-4 font-bold"}>
       <div className={"flex w-full flex-col items-center justify-center space-y-4"}>
         <div className={"flex flex-row items-center justify-center space-x-2"}>
           <SearchFilterButton
@@ -95,7 +95,7 @@ const FollowedDrawerContent = () => {
         </div>
         <ul
           className={
-            "mt-6 flex h-full w-full flex-col items-center justify-center divide-y-2 divide-monokai-bg-contrast overflow-y-auto overflow-x-hidden"
+            "mt-6 flex size-full flex-col items-center justify-center divide-y-2 divide-monokai-bg-contrast overflow-y-auto overflow-x-hidden"
           }
         >
           {filteredFolloweds.map((followed, followedIdx) => {

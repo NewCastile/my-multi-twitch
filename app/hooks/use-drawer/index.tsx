@@ -1,16 +1,9 @@
 "use client";
 
 import { Drawer, DrawerOptions, InstanceOptions } from "flowbite";
-import { useRef } from "react";
+import { useCallback, useState } from "react";
 
-const defaultDrawerOptions: DrawerOptions = {
-  placement: "right",
-  backdrop: true,
-  bodyScrolling: false,
-  edge: false,
-  edgeOffset: "",
-  backdropClasses: "bg-stone-900/80 fixed inset-0 z-30",
-};
+import { defaultDrawerOptions } from "@/constants";
 
 const useDrawer = ({
   drawerId,
@@ -21,15 +14,19 @@ const useDrawer = ({
   override?: InstanceOptions["override"];
   options?: DrawerOptions;
 }) => {
-  const drawerRef = useRef<HTMLDivElement>(null);
+  const [drawer, setDrawer] = useState<Drawer | null | undefined>(null);
+  const drawerRef = useCallback((node: HTMLDivElement | null | undefined) => {
+    // instance options object
+    const instanceOptions: InstanceOptions = {
+      id: drawerId,
+      override,
+    };
 
-  // instance options object
-  const instanceOptions: InstanceOptions = {
-    id: drawerId,
-    override,
-  };
-
-  const drawer = new Drawer(drawerRef.current, options, instanceOptions);
+    if (node !== null) {
+      setDrawer(() => new Drawer(node, options, instanceOptions));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return { drawerRef, drawer } as const;
 };

@@ -8,7 +8,7 @@ const BadRequestView = async ({ message, status, statusText }: ErrorViewComponen
   return (
     <div
       className={
-        "w-full flex flex-col items-center justify-center space-y-4 mt-8 text-monokai-bg-contrast"
+        "mt-8 flex w-full flex-col items-center justify-center space-y-4 text-monokai-bg-contrast"
       }
     >
       <p className={"text-xl"}>
@@ -16,7 +16,6 @@ const BadRequestView = async ({ message, status, statusText }: ErrorViewComponen
       </p>
       <p className={"text-lg"}>{message}</p>
       <div className={"flex flex-col items-center justify-center space-y-2"}>
-        <p className={"text-lg"}>Try refreshing the page</p>
         <RefreshPageButton />
         <p className={"text-lg"}>Or</p>
         <LogoutButton />

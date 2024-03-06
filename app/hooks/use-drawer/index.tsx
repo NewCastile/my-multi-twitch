@@ -3,12 +3,12 @@
 import { Drawer, DrawerOptions, InstanceOptions } from "flowbite";
 import { useCallback, useState } from "react";
 
-import { defaultDrawerOptions } from "@/constants";
+import { DEFAULT_DRAWER_OPTIONS } from "@/constants";
 
 const useDrawer = ({
   drawerId,
   override = true,
-  options = defaultDrawerOptions,
+  options = DEFAULT_DRAWER_OPTIONS,
 }: {
   drawerId: InstanceOptions["id"];
   override?: InstanceOptions["override"];

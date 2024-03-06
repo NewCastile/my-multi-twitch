@@ -136,18 +136,6 @@
 				"reservedFirst": true
 			}
 		],
-		"tailwindcss/no-custom-classname": {
-			"whitelist": [
-				"monokai-bg\\-(secondary|contrast)", 
-				"monokai-white",
-				"monokai-yellow",
-				"monokai-orange",
-				"monokai-violet\\-(primary|dark|darker)",
-				"monokai-red\\-(primary|dark|darker)",
-				"monokai-blue",
-				"monokai-green\\-(primary|dark|darker)"
-			]
-		},
 		"padding-line-between-statements": [
 			"warn",
 			{

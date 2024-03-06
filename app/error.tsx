@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 "use client"; // Error components must be Client Components
 
 import UnexpectedError from "./components/views/error/lib/unexpected-error";

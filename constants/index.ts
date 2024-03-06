@@ -17,12 +17,3 @@ export const ERRORS_STATUSES = [
     statusText: "Bad Request",
   },
 ];
-
-export const DEFAULT_DRAWER_OPTIONS: DrawerOptions = {
-  placement: "right",
-  backdrop: true,
-  bodyScrolling: true,
-  edge: false,
-  edgeOffset: "",
-  backdropClasses: "bg-stone-900/80 fixed inset-0 z-30",
-};

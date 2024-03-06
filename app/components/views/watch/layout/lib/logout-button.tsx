@@ -6,11 +6,11 @@ const LogoutButton = async () => {
   const signOut = async () => {
     "use server";
 
-    const supabase = await createClient();
+    const supabase = createClient();
 
     await supabase.auth.signOut();
 
-    return redirect("/login");
+    redirect("/login");
   };
 
   return (

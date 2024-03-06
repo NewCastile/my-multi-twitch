@@ -11,8 +11,8 @@ export default async function Index() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return redirect("/login");
+    redirect("/login");
   } else {
-    return redirect(`${INITIAL_PAGE_ROUTE}`);
+    redirect(`${INITIAL_PAGE_ROUTE}`);
   }
 }

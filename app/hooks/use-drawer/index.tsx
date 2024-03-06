@@ -3,12 +3,19 @@
 import { Drawer, DrawerOptions, InstanceOptions } from "flowbite";
 import { useCallback, useState } from "react";
 
-import { DEFAULT_DRAWER_OPTIONS } from "@/constants";
+const defaultDrawerOptions: DrawerOptions = {
+  placement: "right",
+  backdrop: true,
+  bodyScrolling: true,
+  edge: false,
+  edgeOffset: "",
+  backdropClasses: "bg-stone-900/80 fixed inset-0 z-30",
+};
 
 const useDrawer = ({
   drawerId,
   override = true,
-  options = DEFAULT_DRAWER_OPTIONS,
+  options = defaultDrawerOptions,
 }: {
   drawerId: InstanceOptions["id"];
   override?: InstanceOptions["override"];

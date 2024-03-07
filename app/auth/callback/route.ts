@@ -2,7 +2,6 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-import { INITIAL_PAGE_ROUTE } from "@/constants";
 import { createClient } from "@/utils/supabase/server";
 
 export async function GET(request: NextRequest) {
@@ -20,7 +19,21 @@ export async function GET(request: NextRequest) {
       if (error) {
         return NextResponse.redirect(`${origin}/login`);
       } else {
-        return NextResponse.redirect(`${origin}/${INITIAL_PAGE_ROUTE}`);
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+
+        const { data: profiles } = await supabase.from("profiles").select("*").eq("id", user?.id);
+
+        if (!profiles) {
+          throw new Error("Profile Not Found");
+        } else {
+          const [profile] = profiles;
+
+          return NextResponse.redirect(
+            profile ? `${origin}${profile.last_visited}` : `${origin}/watch`,
+          );
+        }
       }
     } else {
       return NextResponse.redirect(`${origin}/login`);

@@ -12,7 +12,28 @@ export default async function Index() {
 
   if (!user) {
     redirect("/login");
-  } else {
-    redirect(`${INITIAL_PAGE_ROUTE}`);
   }
+
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("id, last_visited")
+    .eq("id", user.id);
+
+  if (!profiles) {
+    redirect("/login");
+  }
+
+  const [profile] = profiles;
+
+  if (!profile) {
+    redirect("/login");
+  }
+
+  const { last_visited } = profile;
+
+  if (!last_visited) {
+    redirect("/watch");
+  }
+
+  redirect(last_visited);
 }

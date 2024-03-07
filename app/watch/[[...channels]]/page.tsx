@@ -17,6 +17,7 @@ const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -28,6 +29,42 @@ const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
   if (!session) {
     return <SessionExpiredView />;
   }
+
+  const channels = params.channels ?? [];
+  const hasRepeatedChannels = channels.some(
+    (channel, channelIdx) => channels.indexOf(channel, channelIdx + 1) !== -1,
+  );
+
+  const maxReached = channels.length > MAX_BROADCASTS_NUMBER;
+
+  const channelsArray = Array.from(new Set(channels.slice(0, MAX_BROADCASTS_NUMBER)));
+  const formatedUrl = `/watch/${channelsArray.join("/")}`;
+
+  if (hasRepeatedChannels || maxReached) {
+    redirect(formatedUrl);
+  }
+
+  const screenBroadcasts = channelsArray.length
+    ? channels.map((channel) => ({
+        broadcaster_login: channel.toLowerCase(),
+        broadcaster_name: channel,
+      }))
+    : [];
+
+  const { data: profiles } = await supabase.from("profiles").select("*").eq("id", user.id);
+
+  if (profiles) {
+    const [profile] = profiles;
+
+    if (profile) {
+      await supabase
+        .from("profiles")
+        .update({ last_visited: channelsArray.length ? formatedUrl : null })
+        .eq("id", user.id)
+        .select();
+    }
+  }
+
   const {
     user_metadata: { provider_id: providerAccountId },
   } = user;
@@ -69,28 +106,6 @@ const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
   const followedChannelsData: Array<FollowedStream | FollowedChannel> = emptyArray
     .concat(fetchFollowedStreamsResponse.data)
     .concat(loginFilteredFollowedChannels);
-
-  const channels = params.channels ?? [];
-  const hasRepeatedChannels = channels.some(
-    (channel, channelIdx) => channels.indexOf(channel, channelIdx + 1) !== -1,
-  );
-
-  const maxReached = channels.length > MAX_BROADCASTS_NUMBER;
-
-  const channelsArray = Array.from(new Set(channels.slice(0, MAX_BROADCASTS_NUMBER)));
-
-  if (hasRepeatedChannels || maxReached) {
-    const newUrl = `/watch/${channelsArray.join("/")}`;
-
-    redirect(newUrl);
-  }
-
-  const screenBroadcasts = channelsArray.length
-    ? channels.map((channel) => ({
-        broadcaster_login: channel.toLowerCase(),
-        broadcaster_name: channel,
-      }))
-    : [];
 
   return (
     <>

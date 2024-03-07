@@ -1,5 +1,3 @@
-import { DrawerOptions } from "flowbite";
-
 export const MAX_BROADCASTS_NUMBER = 9;
 export const FOLLOWED_ITEMS_PER_PAGE = 7;
 export const SEARCH_ITEMS_PER_PAGE = 20;

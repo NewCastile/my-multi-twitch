@@ -1,28 +1,41 @@
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { AddIcon } from "@/app/components/icons/add-icon";
 import { DeleteIcon } from "@/app/components/icons/delete-icon";
+import useDrawerContext from "@/app/hooks/use-drawer-context.tsx";
 import { DEFAULT_ICON_SIZE } from "@/constants";
 import { IconProps, SelectAction } from "@/types";
 
 const ConfirmSelectController = ({
-  href,
-  onClick,
+  route,
   children,
 }: {
-  href: string;
-  onClick?: () => void;
+  route: string;
   children?: React.ReactNode;
 }) => {
+  const context = useDrawerContext();
+  const router = useRouter();
+
   return (
-    <Link href={href}>
+    <button
+      onClick={(e) => {
+        e.preventDefault();
+        if (context) {
+          const { drawer } = context;
+
+          if (drawer) {
+            drawer.hide();
+          }
+        }
+        router.push(route);
+      }}
+    >
       <div
         className={`rounded-full border-2 border-monokai-bg-contrast bg-monokai-red-primary p-2`}
-        onClick={onClick}
       >
         {children}
       </div>
-    </Link>
+    </button>
   );
 };
 

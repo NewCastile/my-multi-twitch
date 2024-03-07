@@ -174,7 +174,7 @@ const StreamsFilter = ({
           <CancelSelectController onClick={closeSelect}>
             <CloseIcon size={"10px"} />
           </CancelSelectController>
-          <ConfirmSelectController href={newUrl}>
+          <ConfirmSelectController route={newUrl}>
             <ConfirmSelectControllerIcon selectAction={selectAction} size={"12px"} />
           </ConfirmSelectController>
         </div>

@@ -87,7 +87,7 @@ const FollowedDrawerContent = () => {
               <CancelSelectController onClick={closeSelect}>
                 <CloseIcon size={"0.6rem"} />
               </CancelSelectController>
-              <ConfirmSelectController href={newUrl}>
+              <ConfirmSelectController route={newUrl}>
                 <ConfirmSelectControllerIcon selectAction={selectAction} size={"0.6rem"} />
               </ConfirmSelectController>
             </>

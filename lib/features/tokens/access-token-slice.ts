@@ -3,7 +3,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 // Define a type for the slice state
 interface AccessTokenState {
   accessToken: string;
-  refreshToken: string;
+  refreshToken?: string;
 }
 
 // Define the initial state using that type
@@ -20,10 +20,12 @@ export const accessTokenSlice = createSlice({
     // Use the PayloadAction type to declare the contents of `action.payload`
     setAccessToken: (
       state,
-      action: PayloadAction<{ accessToken: string; refreshToken: string }>,
+      action: PayloadAction<{ accessToken: string; refreshToken?: string }>,
     ) => {
       state.accessToken = action.payload.accessToken;
-      state.refreshToken = action.payload.refreshToken;
+      if (action.payload.refreshToken) {
+        state.refreshToken = action.payload.refreshToken;
+      }
     },
   },
 });

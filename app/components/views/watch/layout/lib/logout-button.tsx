@@ -10,7 +10,7 @@ const LogoutButton = async () => {
 
     await supabase.auth.signOut();
 
-    redirect("/login");
+    redirect("/");
   };
 
   return (

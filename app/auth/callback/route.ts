@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
       const { error } = await supabase.auth.exchangeCodeForSession(code);
 
       if (error) {
-        return NextResponse.redirect(`${origin}/login`);
+        return NextResponse.redirect(`${origin}/`);
       } else {
         const {
           data: { user },
@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
         }
       }
     } else {
-      return NextResponse.redirect(`${origin}/login`);
+      return NextResponse.redirect(`${origin}/`);
     }
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -53,13 +53,13 @@ export async function GET(request: NextRequest) {
 
       if (error.status === 429) {
         return NextResponse.redirect(
-          `${origin}/login?message=${error.message}&status=${error.status}&name=${error.name}`,
+          `${origin}/?message=${error.message}&status=${error.status}&name=${error.name}`,
         );
       } else {
-        return NextResponse.redirect(`${origin}/login?${loginPageErrorParams}`);
+        return NextResponse.redirect(`${origin}/?${loginPageErrorParams}`);
       }
     } else {
-      return NextResponse.redirect(`${origin}/login?${loginPageErrorParams}`);
+      return NextResponse.redirect(`${origin}/?${loginPageErrorParams}`);
     }
   }
 }

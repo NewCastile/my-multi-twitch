@@ -1,6 +1,15 @@
+import { SignInButton } from "@/app/components/views/home/lib/sign-in-button";
+import { createClient } from "@/utils/supabase/server";
+
 import LogoutButton from "./logout-button";
 
-const Header = () => {
+const Header = async () => {
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <div
       className={
@@ -12,7 +21,20 @@ const Header = () => {
           My Multi-Twitch
         </p>
       </div>
-      <LogoutButton />
+      {user ? (
+        <LogoutButton />
+      ) : (
+        <form className={"flex flex-col items-center justify-center"}>
+          <div className={"flex flex-row items-center justify-center gap-4"}>
+            <label className={"text-sm font-bold uppercase"}>sign in with</label>
+            <SignInButton
+              className={
+                "btn-sm btn-monokai-violet inline-flex flex-row items-center justify-center gap-2 text-sm font-bold uppercase"
+              }
+            />
+          </div>
+        </form>
+      )}
     </div>
   );
 };

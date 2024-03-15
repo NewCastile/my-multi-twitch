@@ -9,7 +9,7 @@ const monokai = {
   white: "#f8f8f2",
   yellow: "#e6db74",
   orange: "#fd971f",
-  violet: { primary: "#ae81ff", dark: "#9055fa", darker: "#7426ff" },
+  violet: { primary: "#a574fc", dark: "#9055fa", darker: "#7426ff" },
   red: { primary: "#f92672", dark: "#871e44", light: "#f54786" },
   blue: "#66d9ef",
   green: { primary: "#a7e22e", dark: "#6a8f1e", light: "#bce861" },

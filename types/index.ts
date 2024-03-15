@@ -62,6 +62,12 @@ export interface ApiErrorResponse {
   statusText?: string;
 }
 
+export interface AppAccessTokenResponse {
+  access_token: string;
+  expires_in: number;
+  token_type: string;
+}
+
 export interface BroadcasterBasicInfo {
   broadcaster_name: string;
   broadcaster_login: string;

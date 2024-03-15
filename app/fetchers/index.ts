@@ -1,4 +1,9 @@
-import { ApiErrorResponse, FollowedChannelsResponse, FollowedStreamsResponse } from "@/types";
+import {
+  ApiErrorResponse,
+  AppAccessTokenResponse,
+  FollowedChannelsResponse,
+  FollowedStreamsResponse,
+} from "@/types";
 
 const fetchTwitchApiEndpoint = async <T>({
   url,
@@ -60,4 +65,30 @@ export const fetchUserFollowedStreams = async ({
   });
 
   return response;
+};
+
+export const fetchAppAccessToken = async () => {
+  const response = await fetch("https://id.twitch.tv/oauth2/token", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      client_id: process.env.NEXT_PUBLIC_TWITCH_CLIENT_ID,
+      client_secret: process.env.NEXT_PUBLIC_TWITCH_CLIENT_SECRET,
+      grant_type: "client_credentials",
+    }),
+  });
+
+  const responseData = await response.json();
+
+  if (response.ok) {
+    return responseData as AppAccessTokenResponse;
+  } else {
+    return {
+      message: `${responseData.message}`,
+      status: response.status,
+      statusText: response.statusText,
+    };
+  }
 };

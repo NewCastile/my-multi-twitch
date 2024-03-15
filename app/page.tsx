@@ -1,39 +1,25 @@
 import { redirect } from "next/navigation";
 
-import { INITIAL_PAGE_ROUTE } from "@/constants";
 import { createClient } from "@/utils/supabase/server";
 
-export default async function Index() {
+import HomeView from "./components/views/home";
+
+export default async function Index({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined | null };
+}) {
   const supabase = createClient();
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
-    redirect("/login");
-  }
-
-  const { data: profiles } = await supabase
-    .from("profiles")
-    .select("id, last_visited")
-    .eq("id", user.id);
-
-  if (!profiles) {
-    redirect("/login");
-  }
-
-  const [profile] = profiles;
-
-  if (!profile) {
-    redirect("/login");
-  }
-
-  const { last_visited } = profile;
-
-  if (!last_visited) {
+  if (user) {
     redirect("/watch");
   }
 
-  redirect(last_visited);
+  const { message, status } = searchParams;
+
+  return <HomeView {...{ message, status }} />;
 }

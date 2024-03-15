@@ -1,35 +1,21 @@
 import { redirect } from "next/navigation";
 
 import ErrorView from "@/app/components/views/error";
-import SessionExpiredView from "@/app/components/views/error/lib/session-expired-view";
+import UnauthorizedWatchApp from "@/app/components/views/watch/app/no-auth";
 import HomeView from "@/app/components/views/watch/home-view";
 import AppPreloader from "@/app/components/views/watch/lib/app-preloader";
 import NoChannelsView from "@/app/components/views/watch/no-channels-view";
-import { fetchUserFollowedChannels, fetchUserFollowedStreams } from "@/app/fetchers";
+import {
+  fetchAppAccessToken,
+  fetchUserFollowedChannels,
+  fetchUserFollowedStreams,
+} from "@/app/fetchers";
 import { ReduxProvider } from "@/app/providers";
 import { MAX_BROADCASTS_NUMBER } from "@/constants";
-import { FollowedChannel, FollowedStream } from "@/types";
+import { FollowedChannel, FollowedEntity, FollowedStream } from "@/types";
 import { createClient } from "@/utils/supabase/server";
 
 const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
-  const supabase = createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (!user) {
-    redirect("/login");
-  }
-
-  if (!session) {
-    return <SessionExpiredView />;
-  }
-
   const channels = params.channels ?? [];
   const hasRepeatedChannels = channels.some(
     (channel, channelIdx) => channels.indexOf(channel, channelIdx + 1) !== -1,
@@ -50,6 +36,29 @@ const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
         broadcaster_name: channel,
       }))
     : [];
+
+  const supabase = createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  if (!user || !session) {
+    const fetchAppAccessTokenResponse = await fetchAppAccessToken();
+
+    if ("message" in fetchAppAccessTokenResponse) {
+      const { message, status } = fetchAppAccessTokenResponse;
+
+      redirect(`/?message=${message}&status=${status}`);
+    }
+    const { access_token: accessToken } = fetchAppAccessTokenResponse;
+
+    return <UnauthorizedWatchApp {...{ accessToken, channels, screenBroadcasts }} />;
+  }
 
   const { data: profiles } = await supabase.from("profiles").select("*").eq("id", user.id);
 
@@ -93,18 +102,18 @@ const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
     return <ErrorView {...fetchFollowedStreamsResponse} />;
   }
 
+  const { data: followedStreamsData } = fetchFollowedStreamsResponse;
+
   const emptyArray: Array<FollowedStream | FollowedChannel> = [];
 
-  const loginMappedFollowedStreams = fetchFollowedStreamsResponse.data.map(
-    (stream) => stream.user_login,
-  );
+  const loginMappedFollowedStreams = followedStreamsData.map((stream) => stream.user_login);
 
   const loginFilteredFollowedChannels = fetchFollowedChannelsResponse.data.filter(
     (channel) => !loginMappedFollowedStreams.includes(channel.broadcaster_login),
   );
 
-  const followedChannelsData: Array<FollowedStream | FollowedChannel> = emptyArray
-    .concat(fetchFollowedStreamsResponse.data)
+  const followedChannelsData: Array<FollowedEntity> = emptyArray
+    .concat(followedStreamsData)
     .concat(loginFilteredFollowedChannels);
 
   return (
@@ -116,7 +125,7 @@ const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
             accessToken,
             refreshToken,
             followedChannels: followedChannelsData,
-            followedStreams: fetchFollowedStreamsResponse.data,
+            followedStreams: followedStreamsData,
           }}
         />
         {channels.length > 0 ? <HomeView /> : <NoChannelsView />}

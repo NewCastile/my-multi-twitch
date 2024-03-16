@@ -7,9 +7,7 @@ const SignInCard = async ({ children }: { children: React.ReactNode | React.Reac
         </h1>
         <h2 className={"w-max text-center text-5xl font-bold"}>My Multi-Twitch App!</h2>
       </div>
-      <form className={"flex w-full flex-col items-center justify-center space-y-4"}>
-        {children}
-      </form>
+      {children}
     </div>
   );
 };

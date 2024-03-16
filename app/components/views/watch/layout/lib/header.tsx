@@ -24,16 +24,11 @@ const Header = async () => {
       {user ? (
         <LogoutButton />
       ) : (
-        <form className={"flex flex-col items-center justify-center"}>
-          <div className={"flex flex-row items-center justify-center gap-4"}>
-            <label className={"text-sm font-bold uppercase"}>sign in with</label>
-            <SignInButton
-              className={
-                "btn-sm btn-monokai-violet inline-flex flex-row items-center justify-center gap-2 text-sm font-bold uppercase"
-              }
-            />
-          </div>
-        </form>
+        <SignInButton
+          className={
+            "btn-sm btn-monokai-violet inline-flex flex-row items-center justify-center gap-2 text-sm font-bold uppercase"
+          }
+        />
       )}
     </div>
   );

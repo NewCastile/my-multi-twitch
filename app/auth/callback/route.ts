@@ -30,9 +30,15 @@ export async function GET(request: NextRequest) {
         } else {
           const [profile] = profiles;
 
-          return NextResponse.redirect(
-            profile ? `${origin}${profile.last_visited}` : `${origin}/watch`,
-          );
+          if (!profile) {
+            throw new Error("No profile was found");
+          } else {
+            const { last_visited } = profile;
+
+            return NextResponse.redirect(
+              last_visited ? `${origin}${last_visited}` : `${origin}/watch`,
+            );
+          }
         }
       }
     } else {

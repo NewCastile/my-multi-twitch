@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 
-import { INITIAL_PAGE_ROUTE } from "@/constants";
 import { createClient } from "@/utils/supabase/server";
 
 import HomeView from "./components/views/home";

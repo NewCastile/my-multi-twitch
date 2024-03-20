@@ -1,14 +1,18 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
+import { Metadata } from "next";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : "http://localhost:3000";
 
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Next.js and Supabase Starter Kit",
-  description: "The fastest way to build apps with Next.js and Supabase",
+  title: "My Multi-Twitch",
+  description: "Multi-Stream web app build with NextJS Developed by NewCastile",
+  openGraph: {
+    images: ["/images/muy-multi-twitch.jpg"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

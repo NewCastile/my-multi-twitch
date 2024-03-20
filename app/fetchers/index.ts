@@ -67,7 +67,7 @@ export const fetchUserFollowedStreams = async ({
   return response;
 };
 
-export const fetchAppAccessToken = async () => {
+export const fetchAppAccessToken = async (): Promise<ApiErrorResponse | AppAccessTokenResponse> => {
   const response = await fetch("https://id.twitch.tv/oauth2/token", {
     method: "POST",
     headers: {

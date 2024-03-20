@@ -11,7 +11,6 @@ const monokai = {
   orange: "#fd971f",
   violet: { primary: "#a574fc", dark: "#9055fa", darker: "#7426ff" },
   red: { primary: "#f92672", dark: "#871e44", light: "#f54786" },
-  blue: "#66d9ef",
   green: { primary: "#a7e22e", dark: "#6a8f1e", light: "#bce861" },
 };
 
@@ -105,6 +104,16 @@ module.exports = {
           },
           "&:active": {
             backgroundColor: monokai.green.light,
+          },
+        },
+        ".btn-monokai-black": {
+          backgroundColor: monokai["bg-secondary"],
+          color: monokai.white,
+          "&:hover": {
+            backgroundColor: monokai["bg-contrast"],
+          },
+          "&:active": {
+            backgroundColor: monokai["bg-contrast"],
           },
         },
       });

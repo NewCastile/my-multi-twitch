@@ -10,8 +10,4 @@ export const ERRORS_STATUSES = [
     status: 401,
     statusText: "Unauthorized",
   },
-  {
-    status: 400,
-    statusText: "Bad Request",
-  },
 ];

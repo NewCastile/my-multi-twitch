@@ -1,7 +1,6 @@
 import { ERRORS_STATUSES } from "@/constants";
 import { ApiErrorResponse, ErrorViewEntrie } from "@/types";
 
-import BadRequestView from "./lib/bad-request-view";
 import DefaultView from "./lib/default-view";
 import UnauthorizedView from "./lib/unauthorized-view";
 
@@ -37,8 +36,6 @@ const ErrorViews: ErrorViewEntrie[] = ERRORS_STATUSES.map((statusEntrie) => {
   switch (statusText) {
     case "Unauthorized":
       return { statusText, component: UnauthorizedView };
-    case "Bad Request":
-      return { statusText, component: BadRequestView };
     default:
       return { statusText, component: DefaultView };
   }

@@ -14,9 +14,9 @@ const AppPreloader = ({
   followedChannels,
   followedStreams,
 }: {
-  accessToken: string;
+  accessToken?: string;
   refreshToken?: string;
-  screenBroadcasts: BroadcastsState["broadcasts"];
+  screenBroadcasts?: BroadcastsState["broadcasts"];
   followedChannels?: Array<FollowedEntity>;
   followedStreams?: Array<FollowedStream>;
 }) => {
@@ -24,8 +24,8 @@ const AppPreloader = ({
 
   if (followedChannels) dispatch(loadFollowedChannels(followedChannels));
   if (followedStreams) dispatch(loadFollowedStreams(followedStreams));
-  dispatch(setAccessToken({ accessToken, refreshToken }));
-  dispatch(setBroadcasts(screenBroadcasts));
+  if (accessToken) dispatch(setAccessToken({ accessToken, refreshToken }));
+  if (screenBroadcasts) dispatch(setBroadcasts(screenBroadcasts));
 
   return <></>;
 };

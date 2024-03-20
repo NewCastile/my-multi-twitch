@@ -1,52 +1,93 @@
-"use client";
+"use server";
 
-import { CloseIcon } from "@/app/components/icons/close-icon";
-import { FollowedDrawerProvider } from "@/app/context/drawers";
-import useDrawer from "@/app/hooks/use-drawer";
+import { fetchUserFollowedChannels, fetchUserFollowedStreams } from "@/app/fetchers";
+import { FollowedChannel, FollowedEntity, FollowedStream } from "@/types";
+import { createClient } from "@/utils/supabase/server";
 
-import FollowedDrawerContent from "./followed-drawer-content";
+import AppPreloader from "../app-preloader";
 
-const FollowedDrawer = () => {
-  const drawerId = "followed-drawer";
-  const { drawer, drawerRef } = useDrawer({ drawerId });
+import FollowedDrawerClientComponent from "./followed-drawer-cc";
+
+const FollowedDrawer = async () => {
+  const supabase = createClient();
+
+  const userData = supabase.auth.getUser().then((res) => res.data.user);
+  const accessTokenData = supabase.auth.getSession().then((res) => {
+    const {
+      data: { session },
+    } = res;
+
+    if (session) {
+      const { provider_token: accessToken, provider_refresh_token: refreshToken } = session;
+
+      if (accessToken && refreshToken) {
+        return { accessToken, refreshToken };
+      } else {
+        return { accessToken: undefined, refreshToken: undefined };
+      }
+    } else {
+      return { accessToken: undefined, refreshToken: undefined };
+    }
+  });
+
+  const [user, { accessToken, refreshToken }] = await Promise.all([userData, accessTokenData]);
+
+  if (!user || !accessToken || !refreshToken) {
+    return <FollowedDrawerClientComponent {...{ isError: true }} />;
+  }
+
+  const {
+    user_metadata: { provider_id: providerAccountId },
+  } = user;
+
+  const followedChannelResponse = fetchUserFollowedChannels({
+    providerAccountId,
+    accessToken,
+  });
+
+  const followedStreamsResponse = fetchUserFollowedStreams({
+    providerAccountId,
+    accessToken,
+  });
+
+  const [followedChannelsData, followedStreamsData] = await Promise.all([
+    followedChannelResponse,
+    followedStreamsResponse,
+  ]);
+
+  if ("message" in followedChannelsData || "message" in followedStreamsData) {
+    return <FollowedDrawerClientComponent {...{ isError: true }} />;
+  }
+
+  const [{ data: followedChannels }, { data: followedStreams }] = [
+    followedChannelsData,
+    followedStreamsData,
+  ];
+
+  const emptyArray: Array<FollowedStream | FollowedChannel> = [];
+
+  const loginMappedFollowedStreams = followedStreams.map((stream) => stream.user_login);
+
+  const loginFilteredFollowedChannels = followedChannels.filter(
+    (channel) => !loginMappedFollowedStreams.includes(channel.broadcaster_login),
+  );
+
+  const followeds: Array<FollowedEntity> = emptyArray
+    .concat(followedStreams)
+    .concat(loginFilteredFollowedChannels);
 
   return (
-    <FollowedDrawerProvider {...{ drawer, drawerId, drawerRef }}>
-      <button
-        className={"btn-md uppercase"}
-        type={"button"}
-        onClick={(e) => {
-          e.preventDefault();
-          if (drawer) {
-            drawer.show();
-          }
+    <>
+      <AppPreloader
+        {...{
+          followedChannels: followeds,
+          followedStreams,
+          accessToken,
+          refreshToken,
         }}
-      >
-        following
-      </button>
-      <div
-        ref={drawerRef}
-        className={
-          "fixed right-0 top-0 z-40 h-screen w-[25vw] translate-x-full overflow-y-auto bg-monokai-bg p-4 pb-5 pt-20 text-monokai-white transition-transform"
-        }
-      >
-        <button
-          className={
-            "absolute end-2.5 top-2.5 inline-flex size-8 items-center justify-center rounded-lg bg-transparent text-sm text-monokai-bg-contrast"
-          }
-          type={"button"}
-          onClick={() => {
-            if (drawer) {
-              drawer.hide();
-            }
-          }}
-        >
-          <CloseIcon />
-          <span className={"sr-only"}>Close menu</span>
-        </button>
-        <FollowedDrawerContent />
-      </div>
-    </FollowedDrawerProvider>
+      />
+      <FollowedDrawerClientComponent {...{ isError: false }} />
+    </>
   );
 };
 

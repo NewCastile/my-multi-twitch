@@ -21,12 +21,14 @@ const ChatTabs = () => {
         <div className={"sticky top-3 flex w-[30vw] flex-col"}>
           <div
             className={
-              "flex size-full flex-col items-center justify-center space-y-4 font-mono font-bold"
+              "flex h-auto w-full flex-col items-center justify-center gap-4 font-mono font-bold"
             }
           >
             <ul
               ref={tabsElementRef}
-              className={"grid w-full grid-cols-3 gap-2 border-b border-monokai-green-primary pb-2"}
+              className={
+                "flex w-full flex-row flex-wrap gap-4 border-b-2 border-monokai-violet-primary pb-2"
+              }
               id={"chat-tabs"}
               role={"tablist"}
             >
@@ -34,7 +36,7 @@ const ChatTabs = () => {
                 return (
                   <li
                     key={broadcasterIdx}
-                    className={"flex w-full flex-col items-center justify-center"}
+                    className={"flex w-max flex-col items-center justify-center"}
                     role={"presentation"}
                   >
                     <BroadcasterChatTab {...{ ...broadcaster, showTab: tabs?.show }} />
@@ -75,24 +77,19 @@ const BroadcasterChatTab = ({
   broadcaster_login,
 }: BroadcasterBasicInfo & { showTab?: (tabId: string) => void }) => {
   return (
-    <div className={"flex flex-row items-center justify-center space-x-1"}>
-      <button
-        aria-controls={`${broadcaster_login}-chat`}
-        aria-selected={"false"}
-        className={"w-full text-xs"}
-        data-tabs-target={`#${broadcaster_login}-chat`}
-        id={`${broadcaster_login}-tab`}
-        role={"tab"}
-        type={"button"}
-      >
-        <p className={"w-full cursor-pointer break-words uppercase"}>
-          {broadcaster_name ?? broadcaster_login}{" "}
-          <span className={"inline-block"}>
-            <RemoveBroadcastLink broadcasterLogin={broadcaster_login} size={"0.6rem"} />
-          </span>
-        </p>
-      </button>
-    </div>
+    <button
+      aria-label={"tab-button"}
+      className={"w-full text-xs uppercase"}
+      data-tabs-target={`#${broadcaster_login}-chat`}
+      id={`${broadcaster_login}-tab`}
+      role={"tab"}
+      type={"button"}
+    >
+      {broadcaster_name ?? broadcaster_login}{" "}
+      <span className={"inline-block"}>
+        <RemoveBroadcastLink broadcasterLogin={broadcaster_login} size={"0.6rem"} />
+      </span>
+    </button>
   );
 };
 

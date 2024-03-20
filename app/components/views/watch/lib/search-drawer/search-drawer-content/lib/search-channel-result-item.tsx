@@ -13,7 +13,7 @@ const SearchChannelResultItem = ({ matchingChannel }: { matchingChannel: SearchC
   return (
     <li
       className={
-        "flex w-full flex-row items-center justify-center space-x-4 px-3 py-6 text-xs font-medium uppercase"
+        "flex w-full flex-row items-center justify-center gap-4 px-3 py-6 text-xs font-medium uppercase"
       }
     >
       <NextImage
@@ -23,7 +23,7 @@ const SearchChannelResultItem = ({ matchingChannel }: { matchingChannel: SearchC
         src={thumbnail_url}
         width={50}
       />
-      <div className={"flex w-full flex-col items-start justify-start space-y-2"}>
+      <div className={"flex w-full flex-col items-start justify-start gap-2"}>
         {is_live ? (
           <p className={"w-[20ch] break-words text-justify text-sm font-black text-inherit"}>
             {display_name}

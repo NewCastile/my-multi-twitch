@@ -25,29 +25,29 @@ const AddBroadcastLink = ({
   if (maxReached || !isNewChannel) return null;
 
   return (
-    <div className={"px-2 py-1"}>
-      <button
-        className={"text-gray-400"}
-        onClick={() => {
-          if (context) {
-            const { drawer } = context;
+    <span
+      className={"px-2 py-1 text-gray-400"}
+      role={"link"}
+      tabIndex={-1}
+      onClick={() => {
+        if (context) {
+          const { drawer } = context;
 
-            if (drawer) {
-              drawer.hide();
-            }
+          if (drawer) {
+            drawer.hide();
           }
-          router.push(route);
-        }}
-      >
-        {iconOnly ? (
-          <AddIcon />
-        ) : (
-          <p>
-            Add <AddIcon />
-          </p>
-        )}
-      </button>
-    </div>
+        }
+        router.push(route);
+      }}
+    >
+      {iconOnly ? (
+        <AddIcon />
+      ) : (
+        <p>
+          Add <AddIcon />
+        </p>
+      )}
+    </span>
   );
 };
 

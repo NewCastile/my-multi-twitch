@@ -13,12 +13,16 @@ const UnexpectedError = ({ error, reset }: UnexpectedErrorProps) => {
   return (
     <div
       className={
-        "mt-8 flex w-full flex-col items-center justify-center space-y-2 text-monokai-bg-contrast"
+        "mt-8 flex w-full flex-col items-center justify-center gap-2 text-monokai-bg-contrast"
       }
     >
       <h2 className={"text-xl"}>Something went wrong!</h2>
       <p className={"text-lg"}>{error.message}</p>
-      <button className={"btn-md btn-monokai-green"} onClick={() => reset()}>
+      <button
+        className={"btn-md btn-monokai-green text-monokai-bg"}
+        id={"try-again"}
+        onClick={() => reset()}
+      >
         Try again
       </button>
     </div>

@@ -13,7 +13,7 @@ const Header = async () => {
   return (
     <div
       className={
-        "flex w-full flex-row items-center justify-between border-t-8 border-t-monokai-orange bg-monokai-bg-contrast px-5 py-3"
+        "flex w-full flex-row items-center justify-between bg-monokai-bg-secondary px-5 py-3"
       }
     >
       <div>
@@ -22,13 +22,19 @@ const Header = async () => {
         </p>
       </div>
       {user ? (
-        <LogoutButton />
+        <LogoutButton
+          className={"btn-md btn-monokai-black inline-flex gap-2 text-sm font-bold uppercase"}
+        >
+          logout
+        </LogoutButton>
       ) : (
         <SignInButton
           className={
-            "btn-sm btn-monokai-violet inline-flex flex-row items-center justify-center gap-2 text-sm font-bold uppercase"
+            "btn-sm btn-monokai-black inline-flex w-max flex-row items-center justify-center gap-2 px-4 text-sm font-bold uppercase"
           }
-        />
+        >
+          Sign in with Twitch
+        </SignInButton>
       )}
     </div>
   );

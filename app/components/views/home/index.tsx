@@ -13,13 +13,27 @@ const HomeView = async ({
   status?: string | null;
 }) => {
   return (
-    <div className={"flex flex-col items-center justify-center space-y-2"}>
+    <div className={"flex flex-col items-center justify-center gap-8"}>
       <SignInCard>
-        <div className={"flex flex-col items-center justify-center gap-4"}>
-          <SignInButton />
-          <p>Or</p>
-          <Link className={"btn-md btn-monokai-violet text-lg"} href={INITIAL_PAGE_ROUTE}>
-            Continue
+        <div className={"flex flex-col items-center justify-center gap-4 text-monokai-white"}>
+          <SignInButton
+            className={
+              "btn-md btn-monokai-black inline-flex w-max flex-row items-center justify-center gap-4 text-lg font-bold"
+            }
+          >
+            Continue with Twitch
+          </SignInButton>
+          <div className={"flex w-full flex-row items-center justify-center gap-4"}>
+            <div className={"h-[2px] w-full rounded-full bg-gray-500"} />
+            <p>Or</p>
+            <div className={"h-[2px] w-full rounded-full bg-gray-500"} />
+          </div>
+          <Link
+            aria-label={"Continue without login"}
+            className={"btn-md text-lg font-bold"}
+            href={INITIAL_PAGE_ROUTE}
+          >
+            Continue without login
           </Link>
         </div>
       </SignInCard>

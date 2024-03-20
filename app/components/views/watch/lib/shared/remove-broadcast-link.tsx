@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 
 import { CloseIcon } from "@/app/components/icons/close-icon";
@@ -15,7 +17,7 @@ const RemoveBroadcastLink = ({
   const linkHref = `/watch/${newChannels}`;
 
   return (
-    <Link href={linkHref}>
+    <Link aria-label={"Remove this broadcast"} href={linkHref}>
       <CloseIcon size={size} />
     </Link>
   );

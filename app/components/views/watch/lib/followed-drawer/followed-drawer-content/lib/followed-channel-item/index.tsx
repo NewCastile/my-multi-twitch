@@ -14,7 +14,7 @@ const FollowedChannelItem = ({
   onClickHandler,
 }: FollowedChannelItemProps) => {
   return (
-    <li className={"flex w-full flex-row items-center justify-between space-x-2 py-4"}>
+    <li className={"flex w-full flex-row items-center justify-between gap-2 py-4"}>
       <div className={"flex flex-col items-center justify-center"}>
         {!isOnScreen && <SelectBroadcastButton {...{ isSelected, onClickHandler }} />}
       </div>

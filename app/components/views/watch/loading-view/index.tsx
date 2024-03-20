@@ -6,11 +6,11 @@ const WatchPageLoadingView = () => {
       className={"flex w-full animate-pulse flex-row items-start justify-center text-monokai-white"}
       role={"status"}
     >
-      <div className={"flex w-full flex-row items-start justify-center space-x-6 px-6 py-4"}>
-        <div className={"flex h-max w-full flex-col items-start justify-center space-y-4"}>
-          <div className={"flex flex-row space-x-6 py-2"}>
-            <div className={"h-[40px] w-[64px] bg-monokai-bg-contrast"} />
-            <div className={"h-[40px] w-[64px] bg-monokai-bg-contrast"} />
+      <div className={"flex w-full flex-row items-start justify-center gap-6 px-6"}>
+        <div className={"flex h-max w-full flex-col items-start justify-center gap-4"}>
+          <div className={"flex flex-row gap-6 py-2"}>
+            <div className={"h-[35px] w-[64px] bg-monokai-bg-contrast"} />
+            <div className={"h-[35px] w-[64px] bg-monokai-bg-contrast"} />
           </div>
           <div className={"grid w-full grid-cols-2 gap-4"}>
             {Array(5)

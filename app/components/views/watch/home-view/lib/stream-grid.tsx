@@ -122,33 +122,36 @@ const BroadcasterStreamCard = ({
     >
       <div
         className={
-          "flex w-full flex-col items-center justify-center space-y-3 bg-monokai-bg-secondary p-3"
+          "flex w-full flex-col items-center justify-center gap-3 bg-monokai-bg-secondary p-3"
         }
       >
         <div className={"flex w-full flex-row items-center justify-between px-2"}>
-          <div className={"flex flex-row items-center justify-center space-x-2"}>
+          <div className={"flex flex-row items-center justify-center gap-2"}>
             <SelectBroadcastButton
-              {...{ isSelected, onClickHandler: () => onSelect({ broadcaster }) }}
+              {...{
+                isSelected,
+                onClickHandler: () => onSelect({ broadcaster }),
+              }}
             />
             <p
               className={
-                "w-max max-w-[19ch] border-b-4 border-b-monokai-violet-primary font-bold uppercase"
+                "w-max max-w-[19ch] border-b-4 border-b-monokai-violet-primary text-sm font-bold uppercase"
               }
             >
               {broadcaster_name ?? broadcaster_login}
             </p>
           </div>
           <div
-            className={"flex flex-row items-center justify-center space-x-6"}
+            className={"flex flex-row items-center justify-center gap-6"}
             color={"whiteAlpha.700"}
           >
-            <button onClick={() => onFullScreen(index)}>
+            <button aria-label={"expand-broadcast"} onClick={() => onFullScreen(index)}>
               {isMaximized ? <ExitFullScreenIcon /> : <FullScreenIcon />}
             </button>
             <RemoveBroadcastLink broadcasterLogin={broadcaster_login} />
           </div>
         </div>
-        <TwitchPlayer broadcasterLogin={broadcaster_login} height={isMaximized ? "400px" : null} />
+        <TwitchPlayer broadcasterLogin={broadcaster_login} />
       </div>
     </div>
   );
@@ -168,9 +171,7 @@ const StreamsFilter = ({
   return (
     <>
       {isSelecting && (
-        <div
-          className={"absolute right-0 top-2 flex flex-row items-center justify-center space-x-2"}
-        >
+        <div className={"absolute right-0 top-2 flex flex-row items-center justify-center gap-2"}>
           <CancelSelectController onClick={closeSelect}>
             <CloseIcon size={"10px"} />
           </CancelSelectController>

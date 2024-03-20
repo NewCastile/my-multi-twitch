@@ -17,7 +17,10 @@ const ConfirmSelectController = ({
   const router = useRouter();
 
   return (
-    <button
+    <span
+      className={`rounded-full border-2 border-monokai-bg-contrast bg-monokai-red-primary p-2`}
+      role={"link"}
+      tabIndex={0}
       onClick={(e) => {
         e.preventDefault();
         if (context) {
@@ -30,12 +33,8 @@ const ConfirmSelectController = ({
         router.push(route);
       }}
     >
-      <div
-        className={`rounded-full border-2 border-monokai-bg-contrast bg-monokai-red-primary p-2`}
-      >
-        {children}
-      </div>
-    </button>
+      {children}
+    </span>
   );
 };
 

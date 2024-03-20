@@ -9,6 +9,7 @@ const CancelSelectController = ({
 }) => {
   return (
     <button
+      aria-label={"cancel-select"}
       className={`rounded-full border-2 border-monokai-bg-contrast bg-inherit p-2`}
       onClick={onClick}
     >

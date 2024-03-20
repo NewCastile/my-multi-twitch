@@ -89,11 +89,9 @@ const SearchDrawerContent = () => {
 
   return (
     <div
-      className={
-        "flex size-full flex-col items-center justify-start space-y-5 overflow-y-hidden px-4"
-      }
+      className={"flex size-full flex-col items-center justify-start gap-5 overflow-y-hidden px-4"}
     >
-      <div className={"flex flex-row items-center justify-center space-x-2"}>
+      <div className={"flex flex-row items-center justify-center gap-2"}>
         <SearchFilterButton
           disabled={isFetching || isLoading}
           isActive={!liveOnly}

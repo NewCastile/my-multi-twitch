@@ -1,7 +1,7 @@
 "use client";
 
 const SearchFilterButton = ({
-  disabled,
+  disabled = false,
   isActive,
   onClickHandler,
   children,
@@ -13,8 +13,13 @@ const SearchFilterButton = ({
 }) => {
   return (
     <button
-      className={`btn-sm ${isActive ? "bg-monokai-red-dark" : "btn-monokai-red"}`}
+      className={
+        isActive
+          ? "btn-sm bg-monokai-green-light text-black"
+          : "btn-sm bg-monokai-red-light text-black"
+      }
       disabled={disabled}
+      tabIndex={-1}
       onClick={onClickHandler}
     >
       {children}

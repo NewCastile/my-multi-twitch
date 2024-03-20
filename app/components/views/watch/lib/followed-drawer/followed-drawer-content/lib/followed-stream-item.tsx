@@ -18,10 +18,10 @@ const FollowedStreamItem = ({
   return (
     <li
       className={
-        "flex w-full flex-col items-center justify-center space-y-3 py-4 text-xs font-medium uppercase"
+        "flex w-full flex-col items-center justify-center gap-3 py-4 text-xs font-medium uppercase"
       }
     >
-      <div className={"flex w-full flex-row items-center justify-between space-x-2 text-left"}>
+      <div className={"flex w-full flex-row items-center justify-between gap-2 text-left"}>
         {!isOnScreen && (
           <div className={"flex flex-col items-center justify-center"}>
             <SelectBroadcastButton {...{ isSelected, onClickHandler }} />

@@ -7,7 +7,8 @@ const RefreshPageButton = () => {
 
   return (
     <button
-      className={"btn-md btn-monokai-green"}
+      className={"btn-md btn-monokai-green text-monokai-bg"}
+      id={"refresh-page"}
       onClick={() => {
         router.refresh();
       }}

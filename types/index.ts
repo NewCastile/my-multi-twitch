@@ -155,5 +155,6 @@ export interface IconProps {
 export interface DrawerContextProps {
   drawer: Drawer | null | undefined;
   drawerId: string;
+  isHidden: boolean;
   drawerRef: (node: HTMLDivElement | null | undefined) => void;
 }

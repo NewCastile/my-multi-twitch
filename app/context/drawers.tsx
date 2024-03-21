@@ -10,9 +10,10 @@ export const SearchDrawerProvider = ({
   drawer,
   drawerId,
   drawerRef,
+  isHidden,
 }: { children: React.ReactNode } & DrawerContextProps) => {
   return (
-    <SearchDrawerContext.Provider value={{ drawer, drawerId, drawerRef }}>
+    <SearchDrawerContext.Provider value={{ drawer, drawerId, drawerRef, isHidden }}>
       {children}
     </SearchDrawerContext.Provider>
   );
@@ -23,9 +24,10 @@ export const FollowedDrawerProvider = ({
   drawer,
   drawerId,
   drawerRef,
+  isHidden,
 }: { children: React.ReactNode } & DrawerContextProps) => {
   return (
-    <FollowedDrawerContext.Provider value={{ drawer, drawerId, drawerRef }}>
+    <FollowedDrawerContext.Provider value={{ drawer, drawerId, drawerRef, isHidden }}>
       {children}
     </FollowedDrawerContext.Provider>
   );

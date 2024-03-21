@@ -8,10 +8,10 @@ import FollowedDrawerContent from "./followed-drawer-content";
 
 const FollowedDrawerComponentClientComponent = ({ isError }: { isError?: boolean }) => {
   const drawerId = "followed-drawer";
-  const { drawer, drawerRef } = useDrawer({ drawerId });
+  const { drawer, drawerRef, isHidden } = useDrawer({ drawerId });
 
   return (
-    <FollowedDrawerProvider {...{ drawer, drawerId, drawerRef }}>
+    <FollowedDrawerProvider {...{ drawer, drawerId, drawerRef, isHidden }}>
       <button
         aria-label={"open"}
         className={"btn-md font-bold uppercase"}

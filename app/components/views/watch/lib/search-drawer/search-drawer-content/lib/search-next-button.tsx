@@ -4,7 +4,7 @@ const SearchNextButton = ({ onClickHandler }: { onClickHandler: () => void }) =>
   return (
     <button
       aria-label={"expand-search"}
-      className={"btn-sm bg-monokai-red-light text-xs font-bold uppercase text-black"}
+      className={"btn-sm bg-monokai-bg-secondary text-xs font-bold uppercase"}
       tabIndex={-1}
       onClick={onClickHandler}
     >

@@ -1,8 +1,9 @@
 "use client";
 
-import { ChangeEvent, KeyboardEvent } from "react";
+import { ChangeEvent, KeyboardEvent, useContext, useMemo } from "react";
 
 import { SearchIcon } from "@/app/components/icons/search-icon";
+import { SearchDrawerContext } from "@/app/context/drawers";
 
 const SearchInput = ({
   value,
@@ -15,25 +16,30 @@ const SearchInput = ({
   onKeyUpHandler: (e: KeyboardEvent<HTMLInputElement>) => void;
   buttonOnClickHandler: () => void;
 }) => {
+  const context = useContext(SearchDrawerContext);
+  const disabled = useMemo(() => {
+    return context ? context.isHidden : true;
+  }, [context]);
+
   return (
-    <div className={"flex w-full flex-col items-center justify-center"}>
-      <div className={"relative flex w-full flex-col items-center justify-center"}>
-        <input
-          aria-hidden={"true"}
-          className={
-            "block w-full rounded-md border-2 border-monokai-bg-contrast bg-inherit px-2 py-1 outline-none placeholder:text-monokai-bg-contrast focus:border-monokai-red-light focus:ring-monokai-red-light active:border-monokai-red-light active:ring-monokai-red-light"
-          }
-          placeholder={"Search a streamer"}
-          type={"text"}
-          value={value}
-          onChange={(e) => onChangeHandler(e)}
-          onKeyUp={(e) => onKeyUpHandler(e)}
-        />
-        <div className={"absolute right-4 flex items-center"}>
-          <button tabIndex={-1} onClick={buttonOnClickHandler}>
-            <SearchIcon />
-          </button>
-        </div>
+    <div className={"relative flex w-full flex-col items-center justify-center"}>
+      <input
+        className={
+          disabled
+            ? "block w-full cursor-not-allowed rounded-md border-2 border-monokai-bg-contrast bg-inherit px-2 py-1 outline-none placeholder:text-monokai-bg-contrast focus:border-monokai-red-light focus:ring-monokai-red-light active:border-monokai-red-light active:ring-monokai-red-light"
+            : "block w-full rounded-md border-2 border-monokai-bg-contrast bg-inherit px-2 py-1 outline-none placeholder:text-monokai-bg-contrast focus:border-monokai-red-light focus:ring-monokai-red-light active:border-monokai-red-light active:ring-monokai-red-light"
+        }
+        disabled={disabled}
+        placeholder={"Search a streamer"}
+        type={"text"}
+        value={value}
+        onChange={(e) => onChangeHandler(e)}
+        onKeyUp={(e) => onKeyUpHandler(e)}
+      />
+      <div className={"absolute right-4 flex items-center"}>
+        <button tabIndex={-1} onClick={buttonOnClickHandler}>
+          <SearchIcon />
+        </button>
       </div>
     </div>
   );

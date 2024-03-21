@@ -4,13 +4,11 @@ import useTabs from "@/app/hooks/use-tabs";
 import { useAppSelector } from "@/lib/store";
 import { BroadcasterBasicInfo } from "@/types";
 
-import RemoveBroadcastLink from "../../lib/shared/remove-broadcast-link";
-
 import TwitchChat from "./twitch-chat";
 
 const ChatTabs = () => {
   const broadcasters = useAppSelector((state) => state.broadcasts.broadcasts);
-  const { tabs, tabsElementRef, tabPanelsParentRef } = useTabs({
+  const { tabsElementRef, tabPanelsParentRef } = useTabs({
     broadcasters,
     tabsElementId: "chat-tabs",
   });
@@ -36,10 +34,10 @@ const ChatTabs = () => {
                 return (
                   <li
                     key={broadcasterIdx}
-                    className={"flex w-max flex-col items-center justify-center"}
+                    className={"inline-flex w-max flex-row items-center justify-center gap-1"}
                     role={"presentation"}
                   >
-                    <BroadcasterChatTab {...{ ...broadcaster, showTab: tabs?.show }} />
+                    <BroadcasterChatButton {...{ ...broadcaster }} />
                   </li>
                 );
               })}
@@ -47,7 +45,7 @@ const ChatTabs = () => {
             <div
               ref={tabPanelsParentRef}
               className={
-                "flex w-full flex-col items-center justify-center overflow-x-auto overflow-y-hidden"
+                "flex w-full flex-row items-center justify-center overflow-x-auto overflow-y-hidden"
               }
               id={"tabs-content"}
             >
@@ -72,23 +70,18 @@ const ChatTabs = () => {
   );
 };
 
-const BroadcasterChatTab = ({
-  broadcaster_name,
-  broadcaster_login,
-}: BroadcasterBasicInfo & { showTab?: (tabId: string) => void }) => {
+const BroadcasterChatButton = ({ broadcaster_name, broadcaster_login }: BroadcasterBasicInfo) => {
   return (
     <button
+      aria-controls={`${broadcaster_login}-chat`}
       aria-label={"tab-button"}
-      className={"w-full text-xs uppercase"}
+      className={"w-full text-xs uppercase text-monokai-yellow"}
       data-tabs-target={`#${broadcaster_login}-chat`}
       id={`${broadcaster_login}-tab`}
       role={"tab"}
       type={"button"}
     >
-      {broadcaster_name ?? broadcaster_login}{" "}
-      <span className={"inline-block"}>
-        <RemoveBroadcastLink broadcasterLogin={broadcaster_login} size={"0.6rem"} />
-      </span>
+      {broadcaster_name ?? broadcaster_login}
     </button>
   );
 };

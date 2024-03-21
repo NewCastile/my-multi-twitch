@@ -12,10 +12,10 @@ const TwitchChat = ({
   return (
     <iframe
       height={height ?? 500}
-      id={`${broadcasterLogin}-chat`}
+      id={`${broadcasterLogin}-chat-iframe`}
       loading={"lazy"}
       src={`https://www.twitch.tv/embed/${broadcasterLogin}/chat?parent=${process.env.NEXT_PUBLIC_EMBEDDED_IFRAME_PARENT}`}
-      title={`${broadcasterLogin}-chat`}
+      title={`${broadcasterLogin}-chat-iframe`}
       width={width ?? "100%"}
     />
   );

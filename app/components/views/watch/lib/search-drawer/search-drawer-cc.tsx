@@ -8,10 +8,10 @@ import SearchDrawerContent from "./search-drawer-content";
 
 const SearchDrawerClientComponent = () => {
   const drawerId = "search-drawer";
-  const { drawer, drawerRef } = useDrawer({ drawerId });
+  const { drawer, drawerRef, isHidden } = useDrawer({ drawerId });
 
   return (
-    <SearchDrawerProvider {...{ drawer, drawerId, drawerRef }}>
+    <SearchDrawerProvider {...{ drawer, drawerId, drawerRef, isHidden }}>
       <button
         aria-label={"open"}
         className={"btn-md font-bold uppercase"}

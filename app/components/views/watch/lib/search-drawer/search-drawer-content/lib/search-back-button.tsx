@@ -4,7 +4,7 @@ const SearchBackButton = ({ onClickHandler }: { onClickHandler: () => void }) =>
   return (
     <button
       aria-label={"collapse-search"}
-      className={"btn-sm bg-monokai-red-light text-xs font-bold uppercase text-black"}
+      className={"btn-sm bg-monokai-bg-secondary text-xs font-bold uppercase"}
       tabIndex={-1}
       onClick={onClickHandler}
     >

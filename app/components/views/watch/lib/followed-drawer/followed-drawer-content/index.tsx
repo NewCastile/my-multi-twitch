@@ -138,7 +138,7 @@ const FollowedDrawerContent = ({ isError }: { isError?: boolean }) => {
             {hasNextPage && (
               <button
                 aria-label={"expand-followeds"}
-                className={"btn-sm bg-monokai-red-light text-xs font-bold uppercase text-black"}
+                className={"btn-sm bg-monokai-bg-secondary text-xs font-bold uppercase"}
                 tabIndex={-1}
                 onClick={nextPageButtonOnClickHandler}
               >
@@ -148,7 +148,7 @@ const FollowedDrawerContent = ({ isError }: { isError?: boolean }) => {
             {allFollowedsShown && (
               <button
                 aria-label={"collapse-followeds"}
-                className={"btn-sm bg-monokai-red-light text-xs font-bold uppercase text-black"}
+                className={"btn-sm bg-monokai-bg-secondary text-xs font-bold uppercase"}
                 tabIndex={-1}
                 onClick={prevPageButtonOnClickHandler}
               >

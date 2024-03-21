@@ -59,7 +59,7 @@ const useTabs = ({
     const options = {
       defaultTabId: firstBroadcaster.broadcaster_login,
       activeClasses: "text-monokai-green-primary",
-      inactiveClasses: "text-monokai-yellow hover:text-monokai-yellow",
+      inactiveClasses: "text-monokai-yellow",
     };
 
     // instance options with default values

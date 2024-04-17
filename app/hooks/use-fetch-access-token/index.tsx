@@ -37,9 +37,16 @@ export const useFetchAccessToken = () => {
     }
   }, [accessToken]);
 
+  if (appAccessTokenData && "access_token" in appAccessTokenData) {
+    return {
+      accessToken: appAccessTokenData.access_token,
+      appAccessTokenIsError,
+      appAccessTokenIsLoading,
+    };
+  }
+
   return {
-    userAccessToken: accessToken,
-    appAccessTokenData,
+    accessToken,
     appAccessTokenIsError,
     appAccessTokenIsLoading,
   };

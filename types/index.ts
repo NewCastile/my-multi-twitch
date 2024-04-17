@@ -1,6 +1,12 @@
 import { Drawer } from "flowbite";
 import { SVGAttributes } from "react";
 
+export interface Profile {
+  providerAccountId: string;
+  nickname: string;
+  picture: string;
+}
+
 export interface FollowedStream {
   id: string;
   user_id: string;
@@ -158,3 +164,5 @@ export interface DrawerContextProps {
   isHidden: boolean;
   drawerRef: (node: HTMLDivElement | null | undefined) => void;
 }
+
+export type FilterKey = "ALL" | "LIVE_ONLY";

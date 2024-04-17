@@ -94,17 +94,16 @@ export const useFetchSearch = () => {
   };
 
   const changeSearchFilter = (filterKey: FilterKey) => {
-    switch (filterKey) {
-      case "ALL":
-        () => setLiveOnly(false);
-        break;
-      case "LIVE_ONLY":
-        () => setLiveOnly(true);
-        break;
-      default:
-        () => setLiveOnly(false);
-        break;
-    }
+    setLiveOnly(() => {
+      switch (filterKey) {
+        case "ALL":
+          return false;
+        case "LIVE_ONLY":
+          return true;
+        default:
+          return false;
+      }
+    });
   };
 
   const paginationHandlers = {

@@ -2,7 +2,7 @@ import { useRouter } from "next/navigation";
 
 import { AddIcon } from "@/app/components/icons/add-icon";
 import { DeleteIcon } from "@/app/components/icons/delete-icon";
-import useDrawerContext from "@/app/hooks/use-drawer-context.tsx";
+import useDrawerContext from "@/app/hooks/use-drawer-context";
 import { DEFAULT_ICON_SIZE } from "@/constants";
 import { IconProps, SelectAction } from "@/types";
 

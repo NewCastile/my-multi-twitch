@@ -1,7 +1,7 @@
 "use client";
 
-import FollowedDrawer from "../lib/followed-drawer/followed-drawer-cc";
-import SearchDrawer from "../lib/search-drawer/search-drawer-cc";
+import FollowedDrawer from "../lib/followed-drawer";
+import SearchDrawer from "../lib/search-drawer";
 
 const NoChannelsView = () => {
   return (

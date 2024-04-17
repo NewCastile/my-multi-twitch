@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 
 import { AddIcon } from "@/app/components/icons/add-icon";
-import useDrawerContext from "@/app/hooks/use-drawer-context.tsx";
+import useDrawerContext from "@/app/hooks/use-drawer-context";
 import { useAppSelector } from "@/lib/store";
 
 const AddBroadcastLink = ({

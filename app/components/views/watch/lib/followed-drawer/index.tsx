@@ -1,93 +1,63 @@
-"use server";
+"use client";
 
-import { fetchUserFollowedChannels, fetchUserFollowedStreams } from "@/app/fetchers";
-import { FollowedChannel, FollowedEntity, FollowedStream } from "@/types";
-import { createClient } from "@/utils/supabase/server";
+import { CloseIcon } from "@/app/components/icons/close-icon";
+import { FollowedDrawerProvider } from "@/app/context/drawers";
+import useDrawer from "@/app/hooks/use-drawer";
+import { useDrawerRenderConditions } from "@/app/hooks/use-drawer-render-conditions";
 
-import AppPreloader from "../app-preloader";
+import FollowedDrawerContent from "./followed-drawer-content";
 
-import FollowedDrawerClientComponent from "./followed-drawer-cc";
-
-const FollowedDrawer = async () => {
-  const supabase = createClient();
-
-  const userData = supabase.auth.getUser().then((res) => res.data.user);
-  const accessTokenData = supabase.auth.getSession().then((res) => {
-    const {
-      data: { session },
-    } = res;
-
-    if (session) {
-      const { provider_token: accessToken, provider_refresh_token: refreshToken } = session;
-
-      if (accessToken && refreshToken) {
-        return { accessToken, refreshToken };
-      } else {
-        return { accessToken: undefined, refreshToken: undefined };
-      }
-    } else {
-      return { accessToken: undefined, refreshToken: undefined };
-    }
-  });
-
-  const [user, { accessToken, refreshToken }] = await Promise.all([userData, accessTokenData]);
-
-  if (!user || !accessToken || !refreshToken) {
-    return <FollowedDrawerClientComponent {...{ isError: true }} />;
-  }
-
-  const {
-    user_metadata: { provider_id: providerAccountId },
-  } = user;
-
-  const followedChannelResponse = fetchUserFollowedChannels({
-    providerAccountId,
-    accessToken,
-  });
-
-  const followedStreamsResponse = fetchUserFollowedStreams({
-    providerAccountId,
-    accessToken,
-  });
-
-  const [followedChannelsData, followedStreamsData] = await Promise.all([
-    followedChannelResponse,
-    followedStreamsResponse,
-  ]);
-
-  if ("message" in followedChannelsData || "message" in followedStreamsData) {
-    return <FollowedDrawerClientComponent {...{ isError: true }} />;
-  }
-
-  const [{ data: followedChannels }, { data: followedStreams }] = [
-    followedChannelsData,
-    followedStreamsData,
-  ];
-
-  const emptyArray: Array<FollowedStream | FollowedChannel> = [];
-
-  const loginMappedFollowedStreams = followedStreams.map((stream) => stream.user_login);
-
-  const loginFilteredFollowedChannels = followedChannels.filter(
-    (channel) => !loginMappedFollowedStreams.includes(channel.broadcaster_login),
-  );
-
-  const followeds: Array<FollowedEntity> = emptyArray
-    .concat(followedStreams)
-    .concat(loginFilteredFollowedChannels);
+const FollowedDrawer = () => {
+  const drawerId = "followed-drawer";
+  const { drawer, drawerRef, isHidden } = useDrawer({ drawerId });
+  const { disabled, accessTokenAvailable } = useDrawerRenderConditions();
 
   return (
-    <>
-      <AppPreloader
-        {...{
-          followedChannels: followeds,
-          followedStreams,
-          accessToken,
-          refreshToken,
-        }}
-      />
-      <FollowedDrawerClientComponent {...{ isError: false }} />
-    </>
+    <FollowedDrawerProvider {...{ drawer, drawerId, drawerRef, isHidden }}>
+      {accessTokenAvailable && (
+        <button
+          aria-label={"open"}
+          className={
+            disabled
+              ? "btn-md cursor-not-allowed font-bold uppercase text-monokai-bg-contrast"
+              : "btn-md font-bold uppercase"
+          }
+          disabled={disabled}
+          type={"button"}
+          onClick={(e) => {
+            e.preventDefault();
+            if (drawer) {
+              drawer.show();
+            }
+          }}
+        >
+          following
+        </button>
+      )}
+      <div
+        ref={drawerRef}
+        className={
+          "fixed right-0 top-0 z-40 h-screen w-[25vw] translate-x-full overflow-y-auto bg-[#303025] p-4 pb-5 pt-20 text-monokai-white transition-transform"
+        }
+        tabIndex={-1}
+      >
+        <button
+          className={
+            "absolute end-2.5 top-2.5 inline-flex size-8 items-center justify-center rounded-lg bg-transparent text-sm text-monokai-white"
+          }
+          tabIndex={-1}
+          type={"button"}
+          onClick={() => {
+            if (drawer) {
+              drawer.hide();
+            }
+          }}
+        >
+          <CloseIcon />
+        </button>
+        {!isHidden && <FollowedDrawerContent />}
+      </div>
+    </FollowedDrawerProvider>
   );
 };
 

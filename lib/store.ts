@@ -3,9 +3,12 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import broadcastersReducer from "./features/broadcasts/broadcasts-slice";
 import followedReducer from "./features/followed/followed-slice";
+import { followedsApi } from "./features/followed/followeds-api-slice";
 import { searchApi } from "./features/search/search-api-slice";
 import searchChannelsReducer from "./features/search/search-channels-slice";
 import accessTokenReducer from "./features/tokens/access-token-slice";
+import { appAccessTokenApi } from "./features/tokens/app-access-token-api-slice";
+import profileReducer from "./features/user/profile-slice";
 
 export const makeStore = () => {
   return configureStore({
@@ -13,11 +16,18 @@ export const makeStore = () => {
       broadcasts: broadcastersReducer,
       accessToken: accessTokenReducer,
       followed: followedReducer,
-      searchApi: searchApi.reducer,
       searchChannels: searchChannelsReducer,
+      profile: profileReducer,
+      searchApi: searchApi.reducer,
+      followedsApi: followedsApi.reducer,
+      appAccessTokenApi: appAccessTokenApi.reducer,
     },
     middleware(getDefaultMiddleWare) {
-      return getDefaultMiddleWare().concat(searchApi.middleware);
+      return getDefaultMiddleWare().concat(
+        searchApi.middleware,
+        followedsApi.middleware,
+        appAccessTokenApi.middleware,
+      );
     },
   });
 };

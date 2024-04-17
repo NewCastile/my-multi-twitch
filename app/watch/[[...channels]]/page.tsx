@@ -43,6 +43,12 @@ const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
     return <UnauthorizedWatchApp {...{ channels, screenBroadcasts }} />;
   }
 
+  const { provider_token: accessToken, provider_refresh_token: refreshToken } = session;
+
+  if (!accessToken || !refreshToken) {
+    return <UnauthorizedWatchApp {...{ channels, screenBroadcasts }} />;
+  }
+
   const { data: profiles } = await supabase.from("profiles").select("*").eq("id", user.id);
 
   if (profiles) {
@@ -57,7 +63,13 @@ const WatchPage = async ({ params }: { params: { channels?: string[] } }) => {
     }
   }
 
-  return <OAuthWatchApp {...{ channels, screenBroadcasts }} />;
+  const {
+    user_metadata: { provider_id: providerAccountId, picture, nickname },
+  } = user;
+
+  const profile = { providerAccountId, picture, nickname };
+
+  return <OAuthWatchApp {...{ channels, screenBroadcasts, profile, accessToken, refreshToken }} />;
 };
 
 export default WatchPage;

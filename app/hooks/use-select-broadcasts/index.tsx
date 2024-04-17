@@ -36,13 +36,13 @@ const useSelectBroadcasts = ({ selectAction = "filter" }: { selectAction?: Selec
     () => `/watch/${onScreenBroadcasts.map((broadcast) => broadcast.broadcaster_login).join("/")}`,
   );
 
-  const getIsOnScreen = ({ broadcaster_login }: { broadcaster_login: string }) => {
+  const isOnScreen = ({ broadcaster_login }: { broadcaster_login: string }) => {
     const loginMappedBroadcasts = broadcasts.map((b) => b.broadcaster_login);
 
     return loginMappedBroadcasts.includes(broadcaster_login);
   };
 
-  const getIsSelected = ({ broadcaster_login }: { broadcaster_login: string }) => {
+  const isSelected = ({ broadcaster_login }: { broadcaster_login: string }) => {
     const isSelected = selectedBroadcasts.some(
       (selectedBroadcasts) => selectedBroadcasts.broadcaster_login === broadcaster_login,
     );
@@ -50,8 +50,8 @@ const useSelectBroadcasts = ({ selectAction = "filter" }: { selectAction?: Selec
     return isSelected;
   };
 
-  const selectControlsHandlers = {
-    closeSelect: () => setIsSelecting(false),
+  const selectHandlers = {
+    closeSelectHandler: () => setIsSelecting(false),
     onSelectHandler: ({
       broadcaster_login,
       broadcaster_name,
@@ -64,9 +64,7 @@ const useSelectBroadcasts = ({ selectAction = "filter" }: { selectAction?: Selec
 
       setIsSelecting(true);
 
-      const isSelected = getIsSelected({ broadcaster_login });
-
-      if (!isSelected) {
+      if (!isSelected({ broadcaster_login })) {
         selectedBroadcastsDispatcher({
           type: "add",
           payload: { broadcaster_login, broadcaster_name },
@@ -119,15 +117,19 @@ const useSelectBroadcasts = ({ selectAction = "filter" }: { selectAction?: Selec
     router.prefetch(newUrl);
   }, [newUrl, router]);
 
-  return {
+  const selectState = {
     broadcasts,
     selectedBroadcasts,
-    newUrl,
     selectAction,
-    selectControlsHandlers,
     isSelecting,
-    getIsOnScreen,
-    getIsSelected,
+    newUrl,
+    isOnScreen,
+    isSelected,
+  };
+
+  return {
+    selectState,
+    selectHandlers,
   } as const;
 };
 

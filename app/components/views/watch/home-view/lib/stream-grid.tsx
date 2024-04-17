@@ -39,14 +39,9 @@ const updateGridItem = (list: Array<StreamsGridItem>, index: number) => {
 
 const StreamsGrid = () => {
   const {
-    broadcasts,
-    selectedBroadcasts,
-    newUrl,
-    selectAction,
-    isSelecting,
-    getIsSelected,
+    selectState: { broadcasts, selectedBroadcasts, newUrl, selectAction, isSelecting, isSelected },
 
-    selectControlsHandlers: { onSelectHandler, closeSelect },
+    selectHandlers: { onSelectHandler, closeSelectHandler },
   } = useSelectBroadcasts({
     selectAction: "filter",
   });
@@ -80,21 +75,26 @@ const StreamsGrid = () => {
   return (
     <>
       {selectedBroadcasts.length > 0 && (
-        <StreamsFilter {...{ closeSelect, isSelecting, newUrl, selectAction }} />
+        <StreamsFilter
+          {...{ closeSelect: closeSelectHandler, isSelecting, newUrl, selectAction }}
+        />
       )}
       {broadcasts && (
         <div ref={gridRef} className={"flex h-max w-full flex-col items-start justify-center py-4"}>
           <div className={"grid w-full grid-cols-2 gap-4"}>
             {listItems.map((broadcaster, broadcasterIdx) => {
               const { broadcaster_login } = broadcaster;
-              const isSelected = getIsSelected({
-                broadcaster_login,
-              });
 
               return (
                 <BroadcasterStreamCard
                   key={broadcasterIdx}
-                  {...{ broadcaster, isSelected, index: broadcasterIdx, onSelect, onFullScreen }}
+                  {...{
+                    broadcaster,
+                    isSelected: isSelected({ broadcaster_login }),
+                    index: broadcasterIdx,
+                    onSelect,
+                    onFullScreen,
+                  }}
                 />
               );
             })}

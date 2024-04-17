@@ -1,91 +1,35 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useFetchSearch } from "@/app/hooks/use-fetch-search";
 
-import { SpinnerIcon } from "@/app/components/icons/spinner-icon";
-import { SEARCH_ITEMS_PER_PAGE } from "@/constants";
-import { useLazySearchBroadcastQuery } from "@/lib/features/search/search-api-slice";
-import {
-  goToNextPage,
-  goToPrevPage,
-  loadNextPage,
-  loadSearch,
-  resetChannelSearch,
-} from "@/lib/features/search/search-channels-slice";
-import { useAppDispatch, useAppSelector } from "@/lib/store";
-import { ApiErrorResponse, SearchChannelResponse } from "@/types";
-import { isSearchChannelsResponse } from "@/utils/type-guards";
-
-import SearchBackButton from "./lib/search-back-button";
 import SearchChannelResultItem from "./lib/search-channel-result-item";
+import { SearchDrawerPagination } from "./lib/search-drawer-pagination";
 import SearchFilterButton from "./lib/search-filter-button";
 import SearchInput from "./lib/search-input";
-import SearchNextButton from "./lib/search-next-button";
 
 const SearchDrawerContent = () => {
-  const dispatch = useAppDispatch();
-  const { accessToken } = useAppSelector((state) => state.accessToken);
-  const { shownChannels, channels, pageToken } = useAppSelector((state) => state.searchChannels);
+  const {
+    shownChannels,
+    fetchState,
+    queryState,
+    paginationState,
+    searchFilterHandlers,
+    paginationHandlers,
+  } = useFetchSearch();
 
-  const [triggerNextSearch, { data, error, isLoading, isFetching, originalArgs }] =
-    useLazySearchBroadcastQuery();
+  const { data, isLoading, isError, isFetching } = fetchState;
 
-  const [value, setValue] = useState("");
-  const [liveOnly, setLiveOnly] = useState(false);
-  const onFirstPage = pageToken === SEARCH_ITEMS_PER_PAGE;
+  const { hasPagination, isOnFirstPage, pageToken } = paginationState;
+  const { query, liveOnly } = queryState;
 
-  useEffect(() => {
-    if (!data || !isSearchChannelsResponse(data)) return;
-    if (typeof originalArgs?.after === "string") {
-      dispatch(loadNextPage(data.data));
+  const {
+    nextButtonOnClickHandler,
+    prevButtonOnClickHandler,
+    searchInputOnChangeHandler,
+    searchInputOnKeyUpHandler,
+  } = paginationHandlers;
 
-      return;
-    }
-    dispatch(loadSearch(data.data));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, data]);
-
-  useEffect(() => {
-    dispatch(resetChannelSearch());
-  }, [dispatch, liveOnly]);
-
-  const searchButtonOnClickHandler = () => {
-    if (!value) return;
-
-    triggerNextSearch({
-      broadcasterName: value,
-      liveOnly,
-      accessToken,
-    });
-  };
-
-  const hasPagination = (data?: SearchChannelResponse | ApiErrorResponse) => {
-    if (!data) return false;
-    if ("message" in data) return false;
-    if (!isSearchChannelsResponse(data)) return false;
-    if (!data.pagination.cursor) {
-      return false;
-    } else {
-      return true;
-    }
-  };
-
-  const nextButtonOnClickHandler = () => {
-    if (!value) return;
-    if (pageToken && shownChannels.length < channels.length) {
-      dispatch(goToNextPage());
-
-      return;
-    }
-    if (pageToken && data && isSearchChannelsResponse(data)) {
-      triggerNextSearch({
-        broadcasterName: value,
-        liveOnly,
-        accessToken,
-        after: data.pagination.cursor,
-      });
-    }
-  };
+  const { changeSearchFilter } = searchFilterHandlers;
 
   return (
     <div
@@ -95,29 +39,25 @@ const SearchDrawerContent = () => {
         <SearchFilterButton
           disabled={isFetching || isLoading}
           isActive={!liveOnly}
-          onClickHandler={() => setLiveOnly(false)}
+          onClickHandler={() => changeSearchFilter("ALL")}
         >
           All
         </SearchFilterButton>
         <SearchFilterButton
           disabled={isFetching || isLoading}
           isActive={liveOnly}
-          onClickHandler={() => setLiveOnly(true)}
+          onClickHandler={() => changeSearchFilter("LIVE_ONLY")}
         >
           Live only
         </SearchFilterButton>
       </div>
       <SearchInput
-        buttonOnClickHandler={searchButtonOnClickHandler}
-        value={value}
-        onChangeHandler={(e) => setValue(e.target.value)}
-        onKeyUpHandler={(e) => {
-          if (e.key === "Enter") {
-            searchButtonOnClickHandler();
-          }
-        }}
+        buttonOnClickHandler={() => nextButtonOnClickHandler()}
+        value={query}
+        onChangeHandler={(e) => searchInputOnChangeHandler(e)}
+        onKeyUpHandler={(e) => searchInputOnKeyUpHandler(e)}
       />
-      {error ? (
+      {isError ? (
         <p>An error has ocurred 😕. Please try again or reload the page</p>
       ) : !data ? null : "message" in data ? (
         <div className={"flex w-full flex-col items-center justify-center"}>
@@ -137,16 +77,13 @@ const SearchDrawerContent = () => {
           })}
         </ul>
       )}
-      <div className={"flex w-full flex-col items-center justify-center"}>
-        {isLoading || isFetching ? (
-          <SpinnerIcon />
-        ) : pageToken && hasPagination(data) ? (
-          <div className={"flex w-full flex-row items-center justify-between"}>
-            <SearchNextButton onClickHandler={nextButtonOnClickHandler} />
-            {!onFirstPage && <SearchBackButton onClickHandler={() => dispatch(goToPrevPage())} />}
-          </div>
-        ) : null}
-      </div>
+      <SearchDrawerPagination
+        {...{
+          searchState: { isFetching, isLoading },
+          paginationState: { hasPagination, isOnFirstPage, pageToken },
+          paginationHandlers: { nextButtonOnClickHandler, prevButtonOnClickHandler },
+        }}
+      />
     </div>
   );
 };

@@ -12,8 +12,8 @@ const HomeView = async () => {
       <div className={"flex w-full flex-row items-start justify-center gap-6 px-6"}>
         <div className={"flex w-[80vw] flex-col items-center justify-center"}>
           <div className={"flex w-full flex-row items-center justify-start gap-6"}>
-            <SearchDrawer />
             <FollowedDrawer />
+            <SearchDrawer />
           </div>
           <StreamsGrid />
         </div>

@@ -3,32 +3,25 @@ import { useEffect, useState } from "react";
 import { useFetchAccessToken } from "../use-fetch-access-token";
 
 export const useDrawerRenderConditions = () => {
-  const { userAccessToken, appAccessTokenData, appAccessTokenIsError, appAccessTokenIsLoading } =
-    useFetchAccessToken();
+  const { accessToken, appAccessTokenIsError, appAccessTokenIsLoading } = useFetchAccessToken();
 
-  const [disabled, setDisabled] = useState<boolean>(
-    () => appAccessTokenIsLoading || appAccessTokenIsError || !appAccessTokenData,
-  );
+  const [disabled, setDisabled] = useState<boolean>(() => {
+    if (!accessToken) return true;
+    if (appAccessTokenIsLoading) return true;
+    if (appAccessTokenIsError) return true;
 
-  const [accessTokenAvailable, setAccessTokenAvailable] = useState<boolean>(() => {
-    if (appAccessTokenData && "message" in appAccessTokenData) return false;
-    if (!userAccessToken) return false;
-
-    return true;
+    return false;
   });
 
   useEffect(() => {
-    if (userAccessToken || (appAccessTokenData && "access_token" in appAccessTokenData)) {
-      setDisabled(false);
-    }
+    setDisabled(() => {
+      if (!accessToken) return true;
+      if (appAccessTokenIsLoading) return true;
+      if (appAccessTokenIsError) return true;
 
-    setAccessTokenAvailable(() => {
-      if (appAccessTokenData && "message" in appAccessTokenData) return false;
-      if (!userAccessToken) return false;
-
-      return true;
+      return false;
     });
-  }, [userAccessToken, appAccessTokenData]);
+  }, [accessToken, appAccessTokenIsLoading, appAccessTokenIsError]);
 
-  return { accessTokenAvailable, disabled };
+  return { disabled };
 };

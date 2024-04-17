@@ -10,30 +10,28 @@ import FollowedDrawerContent from "./followed-drawer-content";
 const FollowedDrawer = () => {
   const drawerId = "followed-drawer";
   const { drawer, drawerRef, isHidden } = useDrawer({ drawerId });
-  const { disabled, accessTokenAvailable } = useDrawerRenderConditions();
+  const { disabled } = useDrawerRenderConditions();
 
   return (
     <FollowedDrawerProvider {...{ drawer, drawerId, drawerRef, isHidden }}>
-      {accessTokenAvailable && (
-        <button
-          aria-label={"open"}
-          className={
-            disabled
-              ? "btn-md cursor-not-allowed font-bold uppercase text-monokai-bg-contrast"
-              : "btn-md font-bold uppercase"
+      <button
+        aria-label={"open"}
+        className={
+          disabled
+            ? "btn-md cursor-not-allowed font-bold uppercase text-monokai-bg-contrast"
+            : "btn-md font-bold uppercase"
+        }
+        disabled={disabled}
+        type={"button"}
+        onClick={(e) => {
+          e.preventDefault();
+          if (drawer) {
+            drawer.show();
           }
-          disabled={disabled}
-          type={"button"}
-          onClick={(e) => {
-            e.preventDefault();
-            if (drawer) {
-              drawer.show();
-            }
-          }}
-        >
-          following
-        </button>
-      )}
+        }}
+      >
+        following
+      </button>
       <div
         ref={drawerRef}
         className={

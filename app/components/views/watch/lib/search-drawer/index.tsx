@@ -11,30 +11,28 @@ const SearchDrawer = () => {
   const drawerId = "search-drawer";
 
   const { drawer, drawerRef, isHidden } = useDrawer({ drawerId });
-  const { accessTokenAvailable, disabled } = useDrawerRenderConditions();
+  const { disabled } = useDrawerRenderConditions();
 
   return (
     <SearchDrawerProvider {...{ drawer, drawerId, drawerRef, isHidden }}>
-      {accessTokenAvailable && (
-        <button
-          aria-label={"open"}
-          className={
-            disabled
-              ? "btn-md cursor-not-allowed font-bold uppercase text-monokai-bg-contrast"
-              : "btn-md font-bold uppercase"
+      <button
+        aria-label={"open"}
+        className={
+          disabled
+            ? "btn-md cursor-not-allowed font-bold uppercase text-monokai-bg-contrast"
+            : "btn-md font-bold uppercase"
+        }
+        disabled={disabled}
+        type={"button"}
+        onClick={(e) => {
+          e.preventDefault();
+          if (drawer) {
+            drawer.show();
           }
-          disabled={disabled}
-          type={"button"}
-          onClick={(e) => {
-            e.preventDefault();
-            if (drawer) {
-              drawer.show();
-            }
-          }}
-        >
-          search
-        </button>
-      )}
+        }}
+      >
+        search
+      </button>
 
       <div
         ref={drawerRef}

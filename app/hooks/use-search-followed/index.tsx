@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
+import { FOLLOWED_ITEMS_PER_PAGE } from "@/constants";
 import {
   goToChannelsNextPage,
   goToChannelsPrevPage,
@@ -33,14 +34,32 @@ const useSearchFollowed = ({ query, liveOnly }: { query: string; liveOnly: boole
     liveOnly ? followedStreams : followedChannels,
   );
 
-  const [shownFollowed, setShownFollowed] = useState(() =>
+  const [shownFolloweds, setShownFolloweds] = useState(() =>
     liveOnly ? shownFollowedStreams : shownFollowedChannels,
   );
+
+  const [filteredFolloweds, setFilteredFolloweds] = useState<Array<FollowedEntity>>(shownFolloweds);
+
+  const allFollowedsShown = useMemo(() => {
+    if (!followedChannels.length) return false;
+
+    return pageToken > FOLLOWED_ITEMS_PER_PAGE;
+  }, [pageToken, followedChannels]);
+
+  const hasNoFollowedChannels = useMemo(() => {
+    return filteredFolloweds.length === 0;
+  }, [filteredFolloweds]);
+
+  const hasNextPage = useMemo(() => {
+    if (!followedChannels.length) return false;
+
+    return shownFolloweds.length < followeds.length;
+  }, [followeds, followedChannels, shownFolloweds]);
 
   useEffect(() => {
     setPageToken(() => (liveOnly ? streamsPageToken : channelsPageToken));
     setFolloweds(() => (liveOnly ? followedStreams : followedChannels));
-    setShownFollowed(() => (liveOnly ? shownFollowedStreams : shownFollowedChannels));
+    setShownFolloweds(() => (liveOnly ? shownFollowedStreams : shownFollowedChannels));
   }, [
     channelsPageToken,
     followedChannels,
@@ -52,8 +71,6 @@ const useSearchFollowed = ({ query, liveOnly }: { query: string; liveOnly: boole
     streamsPageToken,
   ]);
 
-  const [filteredFolloweds, setFilteredFolloweds] = useState<Array<FollowedEntity>>(shownFollowed);
-
   useEffect(() => {
     setFilteredFolloweds(() => {
       return followeds.slice(0, pageToken);
@@ -63,7 +80,7 @@ const useSearchFollowed = ({ query, liveOnly }: { query: string; liveOnly: boole
   useEffect(() => {
     setFilteredFolloweds(() =>
       !query
-        ? shownFollowed
+        ? shownFolloweds
         : followeds.filter((followed) => {
             if (isFollowedChannel(followed)) {
               return followed.broadcaster_login.includes(query.toLowerCase());
@@ -72,7 +89,7 @@ const useSearchFollowed = ({ query, liveOnly }: { query: string; liveOnly: boole
             }
           }),
     );
-  }, [query, shownFollowed, followeds]);
+  }, [query, shownFolloweds, followeds]);
 
   const nextPageButtonOnClickHandler = () => {
     if (liveOnly) {
@@ -90,7 +107,13 @@ const useSearchFollowed = ({ query, liveOnly }: { query: string; liveOnly: boole
     }
   };
 
-  const controlButtonsHandler = {
+  const paginationState = {
+    allFollowedsShown,
+    hasNextPage,
+    hasNoFollowedChannels,
+  };
+
+  const paginationHandlers = {
     nextPageButtonOnClickHandler,
     prevPageButtonOnClickHandler,
   };
@@ -99,7 +122,14 @@ const useSearchFollowed = ({ query, liveOnly }: { query: string; liveOnly: boole
     dispatch(resetFollowed());
   };
 
-  return { filteredFolloweds, controlButtonsHandler, pageToken, followeds, shownFollowed, reset };
+  return {
+    paginationState,
+    paginationHandlers,
+    filteredFolloweds,
+    followeds,
+    shownFolloweds,
+    reset,
+  };
 };
 
 export default useSearchFollowed;
